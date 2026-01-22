@@ -1,0 +1,185 @@
+# Cursor Rules for ClassArranger Project
+
+## Rule 1: Markdown Files Management
+
+**NEVER create markdown files in the root directory.**
+
+- All markdown documentation files MUST be placed in the `docs/` folder
+- When creating a new markdown file, include a header with:
+  - Creation date
+  - Last updated date
+  - Purpose/description
+- Format:
+  ```markdown
+  # Document Title
+  
+  **Created:** YYYY-MM-DD-MM-SS (Tokyo TIme)
+  **Last Updated:** YYYY-MM-DD-MM-SS (Tokyo Time)
+  **Purpose:** Brief description
+  
+  ---
+  
+  [Content]
+  ```
+- Update `docs/INDEX.md` when creating new documentation files
+- Only create markdown files when explicitly requested or necessary for documentation
+
+## Rule 2: Domain Driven Design (DDD)
+
+**Always follow Domain Driven Design principles when writing code.**
+
+- Organize code by business domains (bounded contexts)
+- Use domain entities, value objects, and aggregates
+- Separate domain logic from infrastructure and presentation layers
+- Structure:
+  - `domain/` - Business logic and domain models
+  - `application/` - Use cases and application services
+  - `infrastructure/` - External integrations and data access
+  - `api/` or `presentation/` - API routes and UI components
+
+## Rule 3: Keep Rules Concise
+
+**Keep cursor rules brief and focused.**
+
+- Avoid verbose explanations
+- Focus on essential guidelines only
+- Let code patterns emerge from practice
+
+## Rule 4: All the Annotation should be in English
+
+**All the Annotation should be in English**
+
+- If there is Adding Chinese or Japanese Annotation, Please also add a english version in the following place.
+
+
+## Rule 5: Operate by Best Practices
+
+**All operations must follow best practices.**
+
+- Do not automatically execute or implement any operation if it does not adhere to best practices.
+- Do not document non-best-practice operations in any markdown file.
+- Evaluate actions for adherence to current best practices before proceeding.
+
+## Rule 6: Context Relevance Filtering for AI Agent
+
+**If the context is too large, prioritize and filter context dynamically.**
+
+- The AI Agent must evaluate which parts of the context are essential and which are non-essential.
+- Irrelevant or unnecessary context should be excluded from processing.
+- Always use dynamic and intelligent strategies to determine relevance based on the current task.
+
+
+## Rule 7: Best Practice - Explain Before You Code
+
+**Before writing code, first explain your approach.**
+
+- Always provide a brief explanation of your thought process and approach before beginning to write code.
+- Ensure the explanation is relevant and concise, focusing on how you intend to solve the problem or implement the feature.
+
+
+
+## Rule 8: Senior Developer Persona
+
+- You are an expert senior software engineer.
+- Do not explain basic concepts.
+- Focus on high-level architecture, scalability, and best practices.
+
+## Rule 9: No "Yapping"
+
+- No conversational filler or unnecessary commentary.
+- Deliver only direct, relevant content.
+
+## Rule 10: Be Concise
+
+- Output only the necessary information.
+- Avoid redundant verbosity.
+- No preambles.
+
+## Rule 11: Chain of Thought
+
+- Before coding, briefly outline steps in a <thinking> tag.
+- Ensure logic is clear and sequential.
+
+## Rule 12: Admit Uncertainty
+
+- If uncertain about version, API, or syntax, declare it explicitly.
+- Never guess or hallucinate technical details.
+
+
+# Project-Scope Specific Rules
+
+## Turborepo Best Practices
+
+- Use workspace protocol (`workspace:*`) for internal package dependencies
+- Place shared code in `/packages` (e.g., `@repo/ui`, `@repo/tsconfig`)
+- Define tasks in root `turbo.json` with proper dependency graph
+- Leverage remote caching for CI/CD pipelines
+- Keep each workspace focused with single responsibility
+- Use `turbo run build --filter` for selective builds
+
+## Next.js Best Practices
+
+- Use App Router (app directory) over Pages Router for new features
+- Implement Server Components by default; use Client Components (`'use client'`) only when necessary
+- Use `next/image` for automatic image optimization
+- Implement proper loading.tsx and error.tsx for better UX
+- Use Route Handlers (app/api) over API routes
+- Leverage streaming with Suspense boundaries
+- Implement proper metadata exports for SEO
+- Use `generateStaticParams` for dynamic routes when possible
+
+## Hono Best Practices
+
+- Structure routes using method chaining for clarity
+- Use middleware for cross-cutting concerns (auth, logging, CORS)
+- Leverage Hono's context type safety with generics
+- Keep route handlers thin; delegate to service layer
+- Use `zValidator` middleware for request validation
+- Return proper HTTP status codes and error responses
+- Use environment variables via `c.env` for runtime config
+
+## LangGraph.js (TypeScript) Best Practices
+
+- Define clear state schemas with Zod or TypeScript types
+- Keep nodes pure and testable; avoid side effects where possible
+- Use conditional edges for dynamic flow control
+- Implement proper error handling at node level
+- Structure graphs as reusable compositions
+- Use checkpointing for long-running workflows
+- Document graph topology with clear node purposes
+- Type all state transitions explicitly
+
+## Terraform Best Practices
+
+- Structure by environment (dev, staging, prod) with modules
+- Use remote state (GCS backend for GCP)
+- Implement proper variable validation and descriptions
+- Use `terraform fmt` and `terraform validate` in CI
+- Never commit `.tfstate` files or sensitive variables
+- Use data sources over hardcoded values
+- Implement resource tagging/labeling for cost tracking
+- Use workspaces for environment isolation
+
+
+## Docker Best Practices
+
+- Use multi-stage builds to reduce image size
+- Implement `.dockerignore` to exclude unnecessary files
+- Use specific base image tags (avoid `latest`)
+- Run containers as non-root user
+- Use build arguments for configurable builds
+- Leverage layer caching; order Dockerfile instructions by change frequency
+- Use health checks (HEALTHCHECK instruction)
+- Scan images for vulnerabilities in CI
+
+## Test-Driven Development (TDD) for AI Coding
+
+- Write tests BEFORE implementation (red-green-refactor)
+- Test not just happy paths but edge cases and error conditions
+- Verify tests fail initially (prove they catch issues)
+- Use integration tests to validate end-to-end flows
+- Mock external dependencies (APIs, databases) in unit tests
+- Implement snapshot tests for UI components
+- Run tests in CI pipeline; block merges on test failures
+- Test that errors are properly handled and logged
+- Validate that async operations complete correctly (not just surface-level execution)
