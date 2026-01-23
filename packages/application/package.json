@@ -3,11 +3,25 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js",
-    "./use-cases": "./dist/use-cases/index.js",
-    "./interfaces": "./dist/interfaces/index.js",
-    "./dtos": "./dist/dtos/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./use-cases": {
+      "types": "./dist/use-cases/index.d.ts",
+      "default": "./dist/use-cases/index.js"
+    },
+    "./interfaces": {
+      "types": "./dist/interfaces/index.d.ts",
+      "default": "./dist/interfaces/index.js"
+    },
+    "./dtos": {
+      "types": "./dist/dtos/index.d.ts",
+      "default": "./dist/dtos/index.js"
+    }
   },
   "scripts": {
     "build": "tsc",
