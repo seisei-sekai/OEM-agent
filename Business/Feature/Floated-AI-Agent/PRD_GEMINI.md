@@ -1,55 +1,55 @@
-# 基于 Clean Architecture 与 Turborepo 架构复刻 TheWayo AI Agent 的深度技术研究报告
+# In-Depth Technical Research Report on Replicating TargetPlatform's AI Agent Based on Clean Architecture and Turborepo
 
-## 1. 执行摘要与引言
+## 1. Executive Summary and Introduction
 
-在生成式人工智能迅速重塑软件交互范式的当下，thewayo.com 所展示的 AI Sourcing Agent ("Nory") 代表了一种典型的高级代理形态。它不仅仅是一个聊天机器人，而是一个具备多模态理解、长程任务编排、供应链资源调度的复杂系统 [1]。用户希望通过“截屏/录屏”的方式逆向工程并复刻这一功能，这提出了双重挑战：  
-1. 如何从表层的 UI 交互中准确推断深层的业务逻辑与状态机  
-2. 如何在现代化的技术栈（Turborepo, Next.js, Hono, LangGraph.js, TypeScript）中，严格遵循领域驱动设计（DDD）和整洁架构（Clean Architecture）原则来实现，避免陷入“面条式代码”的泥潭。
+In an era where generative artificial intelligence is rapidly reshaping software interaction paradigms, the AI Sourcing Agent ("AIAgent") demonstrated on targetplatform.com represents a typical advanced agent architecture. It is not merely a chatbot, but a complex system equipped with multimodal understanding, long-term task orchestration, and supply chain resource scheduling capabilities [1]. Users wish to reverse engineer and replicate this functionality through "screenshots/screen recordings," which presents a dual challenge:
+1. How to accurately infer deep business logic and state machines from surface-level UI interactions
+2. How to implement this in a modern technology stack (Turborepo, Next.js, Hono, LangGraph.js, TypeScript) while strictly adhering to Domain-Driven Design (DDD) and Clean Architecture principles, avoiding "spaghetti code" pitfalls.
 
-本报告旨在提供详尽的工程化实施指南。论证传统“PRD -> 设计 -> 代码”瀑布流模式在构建 AI Agent 时已不再适用，并提出“视频行为分析 -> 逆向事件风暴 -> 状态图设计”新型工作流。报告将深入探讨如何在 LangGraph.js 图结构中实现依赖注入（Dependency Injection, DI），如何利用 Hono 作为接口适配层连接 Next.js 前端与 Agent 核心，以及如何编写高精度 Cursor Rules (.mdc) 以在编码辅助阶段强制执行架构约束。
+This report aims to provide a detailed engineering implementation guide. It demonstrates that the traditional "PRD → Design → Code" waterfall model is no longer suitable for building AI Agents, and proposes a new workflow: "Video Behavior Analysis → Reverse Event Storming → State Diagram Design." The report will delve into how to implement Dependency Injection (DI) in LangGraph.js graph structures, how to use Hono as an interface adapter layer connecting Next.js frontend and Agent core, and how to write high-precision Cursor Rules (.mdc) to enforce architectural constraints during the coding assistance phase.
 
 ---
 
-## 2. 逆向工程方法论：从视觉信号到领域逻辑
+## 2. Reverse Engineering Methodology: From Visual Signals to Domain Logic
 
-要复刻 Nory Agent，首要任务是解构其行为。由于无法访问后端代码，我们需将用户界面（UI）的视频记录视为系统“黑盒”输出，通过观察输入与输出因果，推导其内部状态机模型。
+To replicate the AIAgent, the primary task is to deconstruct its behavior. Since we cannot access the backend code, we must treat the user interface (UI) video recordings as "black box" outputs, inferring internal state machine models by observing input-output causality.
 
-### 2.1 视频流中的行为解构与意图识别
+### 2.1 Behavior Deconstruction and Intent Recognition from Video Streams
 
-thewayo.com 的 Nory Agent 展现了典型的任务型对话特征。分析其交互视频，可以拆解为一系列“技能”（Skills）和“状态”（States）。
+The AIAgent on targetplatform.com exhibits typical task-oriented dialogue characteristics. By analyzing its interaction videos, we can break it down into a series of "Skills" and "States."
 
-#### 表 1：Nory Agent UI 交互与推断后端逻辑映射
+#### Table 1: AIAgent UI Interaction to Inferred Backend Logic Mapping
 
-| 时间戳 / UI 信号           | 用户行为描述                | 推断后端状态 (State)           | 推断领域事件 (Domain Event) | 必需技能 (Skill/Tool)               |
+| Timestamp / UI Signal | User Behavior Description | Inferred Backend State | Inferred Domain Event | Required Skill/Tool |
 | --------------------- | ------------------- | ------------------------ | ----------------------- | ---------------------------- |
-| 00:05 对话框初始化           | 用户进入页面，Agent 主动问候      | Idle → AwaitingIntent   | SessionStarted           | load_user_profile           |
-| 00:15 用户输入需求           | “我想做一批带 Logo 的蓝色卫衣”   | IntentClassification    | RequirementCaptured      | classify_product_category    |
-| 00:25 Agent 追问细节          | “您需要什么面料磅数？”        | SlotFilling             | AmbiguityDetected        | check_required_attributes    |
-| 00:40 展示带 Logo 的效果图      | 用户上传 Logo 图片             | MockupGeneration        | AssetUploaded, MockupRendered | generate_product_mockup      |
-| 00:55 Agent 显示“正在寻找工厂…” | 系统显示进度条                 | Sourcing                | VendorSearchInitiated    | search_supplier_index        |
-| 01:10 展示报价单与交期         | 显示具体金额与时间              | Quoting                 | CostCalculated           | calculate_landed_cost        |
+| 00:05 Dialog initialization | User enters page, Agent proactively greets | Idle → AwaitingIntent | SessionStarted | load_user_profile |
+| 00:15 User inputs requirement | "I want to make a batch of blue hoodies with logos" | IntentClassification | RequirementCaptured | classify_product_category |
+| 00:25 Agent asks for details | "What fabric weight do you need?" | SlotFilling | AmbiguityDetected | check_required_attributes |
+| 00:40 Shows logo mockup | User uploads logo image | MockupGeneration | AssetUploaded, MockupRendered | generate_product_mockup |
+| 00:55 Agent shows "searching for factories..." | System displays progress bar | Sourcing | VendorSearchInitiated | search_supplier_index |
+| 01:10 Shows quote and delivery time | Displays specific amounts and timeline | Quoting | CostCalculated | calculate_landed_cost |
 
-> 通过逐帧分析，将“猜测”功能转化为有限状态机（FSM）建模。在 LangGraph.js 中，这正对应 StateGraph 的结构 [3]。例如，Agent 在“追问细节”与“展示结果”间的跳转，揭示了条件边（Conditional Edges）与循环逻辑（Loop）：必填属性缺失时，必须回退 SlotFilling 状态。
+> Through frame-by-frame analysis, we transform "guessed" functionality into Finite State Machine (FSM) modeling. In LangGraph.js, this corresponds to the StateGraph structure [3]. For example, the Agent's transitions between "asking for details" and "showing results" reveal Conditional Edges and Loop logic: when required attributes are missing, it must return to the SlotFilling state.
 
-### 2.2 利用多模态 AI 辅助逆向分析
+### 2.2 Using Multimodal AI to Assist Reverse Analysis
 
-建议采用 Gemini 1.5 Pro 或 GPT-4o 等支持长视频输入的模型辅助分析 [5]。
+It's recommended to use models that support long video input, such as Gemini 1.5 Pro or GPT-4o, to assist with analysis [5].
 
-- 推荐 Prompt：「分析这段屏幕录制视频。该视频展示了 Nory AI 采购 Agent。请基于领域驱动设计（DDD），识别视频中发生的所有关键业务事件（Domain Events）。请忽略 UI 样式，专注交互逻辑。对每一次 Agent 的响应，推断其调用类型及后端工具；并用 Mermaid 语法绘制该交互流程状态转换图。」
+- Recommended Prompt: "Analyze this screen recording video. The video shows the AIAgent sourcing agent. Based on Domain-Driven Design (DDD), identify all key business events (Domain Events) occurring in the video. Ignore UI styling and focus on interaction logic. For each Agent response, infer its call type and backend tools; and draw the interaction flow state transition diagram using Mermaid syntax."
 
-这种做法可将非结构化视频数据快速转化为结构化逻辑，为事件风暴（Event Storming）提供高质量素材 [7]。
+This approach can quickly convert unstructured video data into structured logic, providing high-quality material for Event Storming [7].
 
 ---
 
-## 3. 架构设计：Turborepo 下的整洁架构与 DDD
+## 3. Architectural Design: Clean Architecture and DDD Under Turborepo
 
-### 3.1 总体架构图景
+### 3.1 Overall Architecture Landscape
 
-采用物理路径隔离强制依赖规则。核心原则：内层（领域/应用）不依赖外层（基础设施/界面），源码依赖方向仅指向内层 [8]。
+Adopt physical path isolation to enforce dependency rules. Core principle: Inner layers (Domain/Application) do not depend on outer layers (Infrastructure/Interface), source code dependency direction only points inward [8].
 
 ```
 /root
-├── .cursor/rules/     # Cursor 规则集 (架构守护者)
+├── .cursor/rules/     # Cursor rule set (Architecture guardian)
 ├── apps/
 │   ├── web/           # [Presentation Layer] Next.js (UI, Client Components)
 │   └── api/           # [Interface Layer] Hono (Controllers, REST/RPC)
@@ -61,48 +61,48 @@ thewayo.com 的 Nory Agent 展现了典型的任务型对话特征。分析其�
     └── di/            # Dependency Injection Container
 ```
 
-### 3.2 领域层 (Domain Layer)
+### 3.2 Domain Layer
 
 - **Entities**: ProductRequirement, Supplier, Quote, Mockup
 - **Value Objects**: FabricWeight, ColorCode, Price
-- **Repository Interfaces**: ISupplierRepository, IProductCatalogRepository（仅定义接口，不依赖数据库）
+- **Repository Interfaces**: ISupplierRepository, IProductCatalogRepository (only define interfaces, no database dependency)
 - **Domain Services**: CostCalculator
 
-> 关键约束：领域层严禁引用 langchain、hono、react、prisma 等外部库
+> Key constraint: Domain layer strictly prohibits referencing external libraries like langchain, hono, react, prisma
 
-### 3.3 应用层 (Application Layer)
+### 3.3 Application Layer
 
-定义 Agent 的技能（用例）：
+Define Agent's skills (use cases):
 
 - Use Cases:
     - FindSupplierUseCase
     - GenerateMockupUseCase
 
-- Agent Interfaces：定义 IAgentService 便于 API 层 decouple
+- Agent Interfaces: Define IAgentService for API layer decoupling
 
-### 3.4 基础设施层 (Infrastructure Layer)
+### 3.4 Infrastructure Layer
 
-- 实现领域层接口，如 PrismaSupplierRepository  
-- Agent 实现（LangGraphAgentService）：定义 StateGraph、Nodes、Edges  
-- 外部服务适配：OpenAIAdapter、MidjourneyAdapter
+- Implement domain layer interfaces, such as PrismaSupplierRepository
+- Agent implementation (LangGraphAgentService): Define StateGraph, Nodes, Edges
+- External service adapters: OpenAIAdapter, MidjourneyAdapter
 
-### 3.5 接口层 (Interface Layer - Hono & Next.js)
+### 3.5 Interface Layer (Hono & Next.js)
 
-- Hono (API)：作为 Next.js 和 Agent 的网关，处理 SSE 流；适合 Cloudflare Workers 部署 [12]
-- Next.js (Web)：负责渲染 UI，通过 tRPC 或 Hono RPC Client 通信
+- Hono (API): Acts as gateway between Next.js and Agent, handles SSE streaming; suitable for Cloudflare Workers deployment [12]
+- Next.js (Web): Responsible for rendering UI, communicates via tRPC or Hono RPC Client
 
 ---
 
-## 4. 深度技术攻坚：LangGraph.js 与依赖注入 (DI) 融合
+## 4. Deep Technical Challenges: LangGraph.js and Dependency Injection (DI) Integration
 
-### 4.1 LangGraph "Configurable" 依赖注入模式
+### 4.1 LangGraph "Configurable" Dependency Injection Pattern
 
-- **组合根 (Composition Root)**：Hono 中初始化 DI 容器，解析全部 Use Case 实例  
-- **上下文传递**：agent.invoke()/stream 时，将 Use Case 放入 configurable  
-- **节点解包**：Node 函数内部从 config.configurable 读取 Use Case  
-- **禁止直接 import**：不允许节点直接导入 UseCase/DB
+- **Composition Root**: Initialize DI container in Hono, resolve all Use Case instances
+- **Context Passing**: When calling agent.invoke()/stream, place Use Case into configurable
+- **Node Unpacking**: Node functions internally read Use Case from config.configurable
+- **Prohibit Direct Import**: Nodes are not allowed to directly import UseCase/DB
 
-#### 步骤 1：定义 Agent 依赖类型 (Application Layer)
+#### Step 1: Define Agent Dependency Types (Application Layer)
 
 ```typescript
 // packages/application/src/agent/AgentDependencies.ts
@@ -115,7 +115,7 @@ export interface AgentDependencies {
 }
 ```
 
-#### 步骤 2："Humble Node" 编写 (Infrastructure Layer)
+#### Step 2: Write "Humble Node" (Infrastructure Layer)
 
 ```typescript
 // packages/infrastructure/src/agent/nodes/sourcingNode.ts
@@ -143,7 +143,7 @@ export const sourcingNode = async (
 };
 ```
 
-#### 步骤 3：Hono 依赖装配 (Apps/API)
+#### Step 3: Hono Dependency Assembly (Apps/API)
 
 ```typescript
 // apps/api/src/routes/agent.ts
@@ -178,13 +178,13 @@ agentRoute.post("/chat", async (c) => {
 export default agentRoute;
 ```
 
-> 注：此模式实现依赖注入，也便于 Serverless 场景下连接池的自动释放 [12]。
+> Note: This pattern implements dependency injection and also facilitates automatic connection pool release in Serverless scenarios [12].
 
-### 4.3 Agent Skill 封装策略
+### 4.3 Agent Skill Encapsulation Strategy
 
 #### Tool Factory Pattern
 
-Application 层定义 Tool 工厂接口，Infrastructure 层实现，适合 Tool Call 模式。
+Application layer defines Tool factory interface, Infrastructure layer implements, suitable for Tool Call pattern.
 
 ```typescript
 // packages/infrastructure/src/agent/tools/SourcingToolsFactory.ts
@@ -214,109 +214,109 @@ export class SourcingToolsFactory {
 
 ---
 
-## 5. Cursor Rules 编写指南：架构的自动守护者
+## 5. Cursor Rules Writing Guide: Automatic Architecture Guardian
 
-为团队开发与 AI 编码严格维持架构，需撰写 Cursor Rules（.mdc 文件）。
+To strictly maintain architecture for team development and AI coding, write Cursor Rules (.mdc files).
 
-### 5.1 领域纯净性保护 (01-domain-layer.mdc)
+### 5.1 Domain Purity Protection (01-domain-layer.mdc)
 
-> 当编辑 packages/domain 下的文件时应用。
+> Applied when editing files under packages/domain.
 
-- **零依赖原则**：禁止导入 react, hono, express, prisma, langchain, openai 等外部库。仅允许 zod、date-fns、uuid。
-- **纯粹性**：实体与值对象必须纯 TypeScript 类或类型。Repository 只能定义接口。
-- **错误处理**：需定义特定 Domain Errors。
+- **Zero Dependency Principle**: Prohibit importing external libraries like react, hono, express, prisma, langchain, openai. Only allow zod, date-fns, uuid.
+- **Purity**: Entities and value objects must be pure TypeScript classes or types. Repositories can only define interfaces.
+- **Error Handling**: Must define specific Domain Errors.
 
-### 5.2 LangGraph 节点实现规范 (02-langgraph-nodes.mdc)
+### 5.2 LangGraph Node Implementation Specification (02-langgraph-nodes.mdc)
 
-> 当编辑 packages/infrastructure/**/nodes/*.ts 时应用。
+> Applied when editing files under packages/infrastructure/**/nodes/*.ts.
 
-- 必须遵循 Humble Object+依赖注入  
-- 禁止 Node 内直接实例化/导入实现  
-- 必须通过 config.configurable 获取依赖  
-- Node 只负责“解析 State → 调用用例 → 回写结果”，复杂逻辑应封装至 Use Case  
-- 严格类型安全
+- Must follow Humble Object + Dependency Injection
+- Prohibit direct instantiation/import of implementations within Node
+- Must obtain dependencies through config.configurable
+- Node only responsible for "Parse State → Call Use Case → Write Back Results", complex logic should be encapsulated in Use Case
+- Strict type safety
 
-### 5.3 Next.js 与 Hono 交互规范 (03-interface-layer.mdc)
+### 5.3 Next.js and Hono Interaction Specification (03-interface-layer.mdc)
 
-> 当编辑 apps/web/** 时应用
+> Applied when editing apps/web/**
 
 #### UI Integration Rules
 
-1. **禁止直接数据库访问**  
-   - Next.js 组件不得直接导入 prisma 或 packages/domain  
-   - 所有数据仅通过 apps/api (Hono) 提供的接口获取
+1. **Prohibit Direct Database Access**
+   - Next.js components must not directly import prisma or packages/domain
+   - All data only obtained through interfaces provided by apps/api (Hono)
 
-2. **流式响应处理**  
-   - 需通过 ai/react (Vercel AI SDK) 或原生 EventSource 处理 Hono 返回的 SSE  
-   - 不可在前端解析 LangGraph 原始 JSON，需在 Hono 转为 ViewModel
-
----
-
-## 6. 工程化流程：摒弃传统 PRD，拥抱逆向事件风暴
-
-传统 PRD 模式不适合 AI Agent，推荐新流程：
-
-### 阶段一：行为捕捉与逆向建模
-
-1. 录制/收集 thewayo.com Nory 的视频素材
-2. 利用 AI 生成“对话脚本”和“决策树”
-3. 逆向事件风暴（识别事件、命令、聚合）
-
-### 阶段二：Skill (Use Case) 定义与 TDD
-
-1. 明确 Agent 的能力，定义 Application 层接口
-2. Zod Schema 严格定义输入输出
-3. 先写单元测试再写实现
-
-### 阶段三：图编排与 Prompt 工程
-
-1. StateGraph 中定义记忆结构、路由逻辑
-2. System Prompt 编写及迭代
-3. Mock 流程全流程验证
-
-### 阶段四：界面集成
-
-1. 开发 Hono API  
-2. Next.js UI，根据 Agent 状态渲染不同交互组件
+2. **Streaming Response Handling**
+   - Must handle Hono's returned SSE through ai/react (Vercel AI SDK) or native EventSource
+   - Cannot parse LangGraph raw JSON on frontend, must convert to ViewModel in Hono
 
 ---
 
-## 7. 数据结构与表设计（参考）
+## 6. Engineering Process: Abandon Traditional PRD, Embrace Reverse Event Storming
 
-**Prisma Model 设计：**
+Traditional PRD model is not suitable for AI Agent, recommended new process:
+
+### Phase 1: Behavior Capture and Reverse Modeling
+
+1. Record/collect video materials of targetplatform.com's AIAgent
+2. Use AI to generate "conversation scripts" and "decision trees"
+3. Reverse Event Storming (identify events, commands, aggregates)
+
+### Phase 2: Skill (Use Case) Definition and TDD
+
+1. Clarify Agent capabilities, define Application layer interfaces
+2. Strictly define input/output with Zod Schema
+3. Write unit tests before implementation
+
+### Phase 3: Graph Orchestration and Prompt Engineering
+
+1. Define memory structure and routing logic in StateGraph
+2. Write and iterate System Prompt
+3. Mock full process verification
+
+### Phase 4: Interface Integration
+
+1. Develop Hono API
+2. Next.js UI, render different interactive components based on Agent state
+
+---
+
+## 7. Data Structure and Table Design (Reference)
+
+**Prisma Model Design:**
 
 | Model            | Fields (Key)                                | Relations              | Description                              |
 |------------------|---------------------------------------------|------------------------|------------------------------------------|
-| SourcingRequest  | id, userId, status, createdAt               | items, quotes          | 用户原始需求单，聚合根                    |
-| RequestItem      | id, requestId, category, specs (JSON)       | request                | 采购项，包含结构化参数                    |
-| ProductMockup    | id, itemId, imageUrl, promptUsed            | item                   | 视觉效果图及其对应的 DALL-E prompt        |
-| Supplier         | id, name, capabilities (Vector), tier       | quotes                 | 供应商库，capabilities 用于 pgvector 检索 |
-| Quote            | id, supplierId, requestId, price, leadTime  | supplier, request      | 呈现给用户的报价、交期                    |
+| SourcingRequest  | id, userId, status, createdAt               | items, quotes          | User's original requirement, aggregate root |
+| RequestItem      | id, requestId, category, specs (JSON)       | request                | Procurement item, contains structured parameters |
+| ProductMockup    | id, itemId, imageUrl, promptUsed            | item                   | Visual mockup and its corresponding DALL-E prompt |
+| Supplier         | id, name, capabilities (Vector), tier       | quotes                 | Supplier database, capabilities used for pgvector search |
+| Quote            | id, supplierId, requestId, price, leadTime  | supplier, request      | Quote and delivery time presented to user |
 
 ---
 
-## 8. 结论
+## 8. Conclusion
 
-复刻 `thewayo.com` 的 Nory Agent 是一次面向现代 AI 工程体系的实践：借助 **Turborepo** 分层、**Clean Architecture** 隔离业务复杂性、**LangGraph.js** 管理状态机，以及 **Hono** 处理边缘连接，构建灵活、健壮系统。
+Replicating the AIAgent from `targetplatform.com` is a practice oriented toward modern AI engineering systems: leveraging **Turborepo** layering, **Clean Architecture** to isolate business complexity, **LangGraph.js** to manage state machines, and **Hono** to handle edge connections, building a flexible and robust system.
 
-创新点核心为：
+Core innovations include:
 
-1. **依赖注入的图节点化**：configurable 模式解决 LangGraph 与整洁架构的冲突
-2. **Cursor Rules 架构治理**：将架构师约束转化为 AI 编程的硬性规则
-3. **逆向事件风暴工作流**：摒弃过时 PRD，更精准捕获 AI 行为
+1. **Graph Node Dependency Injection**: configurable pattern resolves conflicts between LangGraph and Clean Architecture
+2. **Cursor Rules Architecture Governance**: Transforms architect constraints into hard rules for AI programming
+3. **Reverse Event Storming Workflow**: Abandons outdated PRD, more precisely captures AI behavior
 
-该工程化流程具极高复用性，适于采购、客服、销售、数据分析等复杂领域的 AI Agent 项目。AI 本身只是基础设施，真正价值在于领域理解与建模的深度。
-
----
-
-*注：本报告建议的所有代码结构和规则配置均可直接用于初始化您的本地项目。*
+This engineering process has extremely high reusability, suitable for complex domain AI Agent projects in procurement, customer service, sales, data analysis, etc. AI itself is just infrastructure; true value lies in the depth of domain understanding and modeling.
 
 ---
 
-## Works cited
+*Note: All code structures and rule configurations recommended in this report can be directly used to initialize your local project.*
 
-1. Wayo | Turn your ideas into real, physical products, accessed January 23, 2026, https://www.thewayo.com/
-2. Design a fully custom, one-of-a-kind product | Wayo, accessed January 23, 2026, https://www.thewayo.com/fully-custom-projects
+---
+
+## Works Cited
+
+1. TargetPlatform | Turn your ideas into real, physical products, accessed January 23, 2026, https://www.targetplatform.com/
+2. Design a fully custom, one-of-a-kind product | TargetPlatform, accessed January 23, 2026, https://www.targetplatform.com/fully-custom-projects
 3. An Absolute Beginner's Guide to LangGraph.js - Microsoft Community Hub, accessed January 23, 2026, https://techcommunity.microsoft.com/blog/educatordeveloperblog/an-absolute-beginners-guide-to-langgraph-js/4212496
 4. LangGraph — Architecture and Design | by Shuvrajyoti Debroy | Medium, accessed January 23, 2026, https://medium.com/@shuv.sdr/langgraph-architecture-and-design-280c365aaf2c
 5. Plan your video story with AI in Google Vids (Workspace Labs) - Google Docs Editors Help, accessed January 23, 2026, https://support.google.com/docs/answer/15067812?hl=en

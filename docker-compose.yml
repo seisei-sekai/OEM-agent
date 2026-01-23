@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  # Next.js Web Frontend
+  web:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    ports:
+      - "3000:3000"  # Different from 5173
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+      - NODE_ENV=production
+      - NODE_PATH=/app/node_modules/.pnpm/next@14.1.0_react-dom@18.3.1_react@18.3.1/node_modules:/app/node_modules
+    depends_on:
+      - api
+    networks:
+      - oem-network
+    restart: unless-stopped
+
+  # Hono API Backend
+  api:
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    ports:
+      - "4000:4000"  # Different from 8000
+    environment:
+      - PORT=4000
+      - NODE_ENV=development
+      - MONGODB_URL=mongodb://mongodb:27017
+      - MONGODB_DB_NAME=oem_agent
+      - WEAVIATE_URL=http://weaviate:8080
+    env_file:
+      - .env
+    # 🔥 REMOVED: volumes that override built files in production
+    # volumes:
+    #   - ./apps/api:/app/apps/api
+    #   - ./packages:/app/packages
+    #   - /app/node_modules
+    #   - /app/apps/api/node_modules
+    depends_on:
+      - mongodb
+      - weaviate
+    networks:
+      - oem-network
+    restart: unless-stopped
+
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    ports:
+      - "27018:27017"  # Map to 27018 externally to avoid conflict with other projects
+    volumes:
+      - mongodb_data:/data/db
+      - ./docker/mongo-init:/docker-entrypoint-initdb.d
+    environment:
+      - MONGO_INITDB_DATABASE=oem_agent
+    networks:
+      - oem-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Weaviate Vector Database
+  weaviate:
+    image: semitechnologies/weaviate:1.24.1
+    ports:
+      - "9080:8080"  # Map to 9080 externally to avoid conflicts
+    environment:
+      - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
+      - PERSISTENCE_DATA_PATH=/var/lib/weaviate
+      - DEFAULT_VECTORIZER_MODULE=none
+      - ENABLE_MODULES=
+      - CLUSTER_HOSTNAME=node1
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+    networks:
+      - oem-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/v1/.well-known/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mongodb_data:
+    driver: local
+  weaviate_data:
+    driver: local
+
+networks:
+  oem-network:
+    driver: bridge

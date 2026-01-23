@@ -1,0 +1,17 @@
+# GCP Configuration
+project_id = "your-gcp-project-id"
+region     = "asia-northeast1"
+zone       = "asia-northeast1-a"
+
+# VM Configuration
+instance_name  = "oem-agent-vm"
+machine_type   = "e2-medium"
+boot_disk_size = 30
+
+# API Keys
+openai_api_key = "your-openai-api-key"
+
+# Git Repository (optional)
+git_repo_url = "https://github.com/yourusername/oem-agent.git"
+
+

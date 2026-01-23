@@ -1,0 +1,41 @@
+{
+  "name": "@repo/infrastructure",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./agent": "./dist/agent/index.js",
+    "./repositories": "./dist/repositories/index.js",
+    "./ai": "./dist/ai/index.js",
+    "./vector": "./dist/vector/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit",
+    "seed": "tsx src/scripts/seed.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@repo/domain": "workspace:*",
+    "@repo/application": "workspace:*",
+    "@langchain/core": "^0.1.30",
+    "@langchain/langgraph": "^0.0.12",
+    "@langchain/openai": "^0.0.19",
+    "cheerio": "^1.0.0-rc.12",
+    "mongodb": "^6.3.0",
+    "openai": "^4.24.1",
+    "weaviate-ts-client": "^2.1.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0",
+    "@vitest/ui": "^1.2.0"
+  }
+}
+

@@ -1,0 +1,31 @@
+{
+  "name": "@repo/domain",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./entities": "./dist/entities/index.js",
+    "./value-objects": "./dist/value-objects/index.js",
+    "./repositories": "./dist/repositories/index.js",
+    "./services": "./dist/services/index.js",
+    "./events": "./dist/events/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0",
+    "@vitest/ui": "^1.2.0"
+  }
+}
+

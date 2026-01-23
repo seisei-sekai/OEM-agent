@@ -172,6 +172,37 @@
 - Use health checks (HEALTHCHECK instruction)
 - Scan images for vulnerabilities in CI
 
+## Docker + TypeScript Compilation ⚠️ CRITICAL
+
+**NEVER mask compilation errors with `|| echo` in Dockerfile.**
+
+**Problem**: TypeScript incremental compilation (`.tsbuildinfo`) can cause partial files to not recompile, leading to stale code in Docker containers even after source changes.
+
+**Symptoms**:
+- Code changes not reflected in running containers
+- Missing logs or functions that were recently added
+- Docker build succeeds but uses old compiled JS files
+
+**Solution**:
+```dockerfile
+# ❌ BAD - Masks compilation errors
+RUN pnpm build || echo "Build completed with warnings"
+
+# ✅ GOOD - Fails fast on errors
+RUN pnpm build
+```
+
+**When code doesn't update in Docker**:
+1. Stop containers: `docker-compose down`
+2. Delete local build artifacts: `rm -rf packages/*/dist packages/*/*.tsbuildinfo`
+3. Rebuild without cache: `docker-compose build --no-cache`
+4. Verify compiled code in container: `docker exec <container> grep "new code" /app/path/to/file.js`
+
+**Prevention**:
+- Always check Docker container contents after deploy if behavior seems wrong
+- Use `--no-cache` flag when debugging compilation issues
+- Remove error suppression from Dockerfiles (`|| echo`, `|| true`, etc.)
+
 ## Test-Driven Development (TDD) for AI Coding
 
 - Write tests BEFORE implementation (red-green-refactor)
@@ -183,3 +214,17 @@
 - Run tests in CI pipeline; block merges on test failures
 - Test that errors are properly handled and logged
 - Validate that async operations complete correctly (not just surface-level execution)
+
+## MongoDB Best Practices
+
+- Use validation schemas for collections to enforce data integrity
+- Create appropriate indexes for high-frequency queries; avoid unnecessary indexes
+- Prefer using ObjectIDs for primary keys
+- Use replica sets for high availability and data redundancy
+- Regularly back up production databases and test restore procedures
+- Avoid unbounded schema growth (e.g., unbounded arrays or documents ≥ 16MB)
+- Separate operational and analytical workloads with dedicated clusters or read replicas
+- Manage database user permissions using role-based access control (RBAC)
+- Monitor and tune query performance with profiling tools
+- Store sensitive data encrypted at rest and in transit
+

@@ -1,3 +1,11 @@
+# ============================================
+# TEMPLATE - ClassArranger Project
+# ============================================
+# NOTE: This is a TEMPLATE from a different project (ClassArranger)
+# Uses port 8000 for API (NOT the same as OEM Agent which uses 4000)
+# For OEM Agent configuration, see /terraform/main.tf
+# ============================================
+
 terraform {
   required_version = ">= 1.0"
 
