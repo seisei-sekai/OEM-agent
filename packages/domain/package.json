@@ -3,13 +3,33 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js",
-    "./entities": "./dist/entities/index.js",
-    "./value-objects": "./dist/value-objects/index.js",
-    "./repositories": "./dist/repositories/index.js",
-    "./services": "./dist/services/index.js",
-    "./events": "./dist/events/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./entities": {
+      "types": "./dist/entities/index.d.ts",
+      "default": "./dist/entities/index.js"
+    },
+    "./value-objects": {
+      "types": "./dist/value-objects/index.d.ts",
+      "default": "./dist/value-objects/index.js"
+    },
+    "./repositories": {
+      "types": "./dist/repositories/index.d.ts",
+      "default": "./dist/repositories/index.js"
+    },
+    "./services": {
+      "types": "./dist/services/index.d.ts",
+      "default": "./dist/services/index.js"
+    },
+    "./events": {
+      "types": "./dist/events/index.d.ts",
+      "default": "./dist/events/index.js"
+    }
   },
   "scripts": {
     "build": "tsc",
