@@ -65,3 +65,9 @@ tfplan
 .cache/
 temp/
 tmp/
+
+# Project-specific exclusions
+Business/
+Template/
+scripts/
+README_CN.md
