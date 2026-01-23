@@ -53,6 +53,9 @@ if [ -n "${git_repo_url}" ]; then
     fi
 fi
 
+# Get external IP
+EXTERNAL_IP=$(curl -s http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip -H 'Metadata-Flavor: Google')
+
 # Create .env file
 cat > .env <<EOF
 OPENAI_API_KEY=${openai_api_key}
@@ -60,8 +63,13 @@ MONGODB_URI=mongodb://admin:password@mongodb:27017/oem-agent?authSource=admin
 WEAVIATE_URL=http://weaviate:8080
 PORT=4000
 NODE_ENV=production
-NEXT_PUBLIC_API_URL=http://$(curl -s http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip -H 'Metadata-Flavor: Google'):4000
+NEXT_PUBLIC_API_URL=http://$EXTERNAL_IP:4000
+FRONTEND_URL=http://$EXTERNAL_IP:3000
 EOF
+
+# Export environment variables for docker-compose
+export NEXT_PUBLIC_API_URL=http://$EXTERNAL_IP:4000
+export FRONTEND_URL=http://$EXTERNAL_IP:3000
 
 # Start services with Docker Compose
 if [ -f "docker-compose.yml" ]; then

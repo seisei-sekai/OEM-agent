@@ -1,4 +1,27 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+// Dynamic API URL: supports both build-time and runtime configuration
+const getApiUrl = () => {
+  // Try runtime config from window (injected by server)
+  if (typeof window !== 'undefined' && (window as any).__API_URL__) {
+    return (window as any).__API_URL__;
+  }
+  
+  // Try build-time env var
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  
+  // Fallback: use same host as frontend (works for same-origin deployment)
+  if (typeof window !== 'undefined') {
+    const protocol = window.location.protocol;
+    const hostname = window.location.hostname;
+    return `${protocol}//${hostname}:4000`;
+  }
+  
+  // Server-side fallback
+  return 'http://localhost:4000';
+};
+
+const API_URL = getApiUrl();
 
 export const apiClient = {
   // Create new session
