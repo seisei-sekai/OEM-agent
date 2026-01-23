@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Send, Paperclip } from 'lucide-react';
 import { useAIAgentStore } from '@/lib/store';
 import { apiClient } from '@/lib/api-client';
+import { ComingSoonTooltip } from './ComingSoonTooltip';
 
 export function ChatInput() {
   const [input, setInput] = useState('');
@@ -36,7 +37,7 @@ export function ChatInput() {
       // Create agent message placeholder
       const agentMessageId = crypto.randomUUID();
       let agentResponse = '';
-      
+
       // Add initial empty agent message
       addMessage({
         id: agentMessageId,
@@ -76,10 +77,12 @@ export function ChatInput() {
   return (
     <form onSubmit={handleSubmit} className="border-t p-4">
       <div className="flex items-center gap-2">
-        <button type="button" className="p-2 hover:bg-gray-100 rounded-lg">
-          <Paperclip className="w-5 h-5 text-gray-500" />
-        </button>
-        
+        <ComingSoonTooltip>
+          <button type="button" className="p-2 rounded-lg opacity-50 pointer-events-none">
+            <Paperclip className="w-5 h-5 text-gray-500" />
+          </button>
+        </ComingSoonTooltip>
+
         <input
           type="text"
           value={input}
@@ -87,7 +90,7 @@ export function ChatInput() {
           placeholder="Say anything..."
           className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
-        
+
         <button
           type="submit"
           disabled={!input.trim()}

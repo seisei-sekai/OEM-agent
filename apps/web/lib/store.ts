@@ -75,7 +75,7 @@ interface AIAgentStore {
 export const useAIAgentStore = create<AIAgentStore>((set, get) => ({
   // Initial state
   isModalOpen: false,
-  isSidebarOpen: true,
+  isSidebarOpen: false,  // 默认关闭
   isStreaming: false,
   currentSessionId: null,
   messages: [],

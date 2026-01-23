@@ -5,6 +5,7 @@ import { useAIAgentStore } from '@/lib/store';
 import { BrandingInfoCard } from './BrandingInfoCard';
 import { ProductMockupCard } from './ProductMockupCard';
 import { TransitionCard } from './TransitionCard';
+import { ComingSoonTooltip } from './ComingSoonTooltip';
 import { apiClient } from '@/lib/api-client';
 
 export function MessageList() {
@@ -176,10 +177,18 @@ export function MessageList() {
         </p>
 
         <div className="grid grid-cols-2 gap-4 w-full max-w-2xl">
-          <QuickActionCard icon="⚡" title="Create branded merch" />
-          <QuickActionCard icon="✨" title="Make a fully custom product" />
-          <QuickActionCard icon="✋" title="Ask a general question" />
-          <QuickActionCard icon="🔍" title="Track order or shipment" />
+          <ComingSoonTooltip>
+            <QuickActionCard icon="⚡" title="Create branded merch" disabled />
+          </ComingSoonTooltip>
+          <ComingSoonTooltip>
+            <QuickActionCard icon="✨" title="Make a fully custom product" disabled />
+          </ComingSoonTooltip>
+          <ComingSoonTooltip>
+            <QuickActionCard icon="✋" title="Ask a general question" disabled />
+          </ComingSoonTooltip>
+          <ComingSoonTooltip>
+            <QuickActionCard icon="🔍" title="Track order or shipment" disabled />
+          </ComingSoonTooltip>
         </div>
       </div>
     );
@@ -233,9 +242,14 @@ export function MessageList() {
   );
 }
 
-function QuickActionCard({ icon, title }: { icon: string; title: string }) {
+function QuickActionCard({ icon, title, disabled = false }: { icon: string; title: string; disabled?: boolean }) {
   return (
-    <button className="p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors text-left">
+    <button
+      className={`p-4 border border-gray-200 rounded-lg text-left transition-colors ${disabled
+          ? 'opacity-50 pointer-events-none'
+          : 'hover:border-purple-300 hover:bg-purple-50'
+        }`}
+    >
       <div className="text-3xl mb-2">{icon}</div>
       <div className="text-sm font-medium">{title}</div>
       <div className="text-xs text-gray-500 mt-1">→</div>

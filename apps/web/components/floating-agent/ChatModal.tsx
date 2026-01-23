@@ -7,6 +7,7 @@ import { ChatInput } from './ChatInput';
 import { ChatSidebar } from './ChatSidebar';
 import { DebugPanel } from './DebugPanel';
 import { QuickActionButtons } from './QuickActionButtons';
+import { ComingSoonTooltip } from './ComingSoonTooltip';
 import { useAIAgentStore } from '@/lib/store';
 
 interface ChatModalProps {
@@ -16,7 +17,7 @@ interface ChatModalProps {
 export function ChatModal({ onClose }: ChatModalProps) {
   const { isSidebarOpen, toggleSidebar, userId, loadChatHistory } = useAIAgentStore();
   const [debugMode, setDebugMode] = useState(false);
-  
+
   // Load chat history on mount
   useEffect(() => {
     const defaultUserId = userId || 'default-user';
@@ -31,7 +32,7 @@ export function ChatModal({ onClose }: ChatModalProps) {
       >
         {/* Debug Panel */}
         {debugMode && <DebugPanel onClose={() => setDebugMode(false)} />}
-        
+
         <div className="flex-1 flex overflow-hidden">
           {/* Sidebar */}
           {isSidebarOpen && <ChatSidebar />}
@@ -51,9 +52,11 @@ export function ChatModal({ onClose }: ChatModalProps) {
               </div>
 
               <div className="flex items-center gap-2">
-                <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
-                  Talk to Support team
-                </button>
+                <ComingSoonTooltip>
+                  <button className="px-4 py-2 border border-gray-300 rounded-lg opacity-50 text-sm pointer-events-none">
+                    Talk to Support team
+                  </button>
+                </ComingSoonTooltip>
                 <button className="p-2 hover:bg-gray-100 rounded-lg">
                   <Maximize2 className="w-5 h-5" />
                 </button>
@@ -71,13 +74,12 @@ export function ChatModal({ onClose }: ChatModalProps) {
 
             {/* Input */}
             <ChatInput />
-            
+
             {/* Debug Toggle (bottom left) */}
             <button
               onClick={() => setDebugMode(!debugMode)}
-              className={`absolute bottom-4 left-4 p-2 rounded-lg shadow-lg transition-colors ${
-                debugMode ? 'bg-purple-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'
-              }`}
+              className={`absolute bottom-4 left-4 p-2 rounded-lg shadow-lg transition-colors ${debugMode ? 'bg-purple-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'
+                }`}
               title="Toggle Debug Mode"
             >
               <Bug className="w-5 h-5" />
