@@ -67,7 +67,7 @@ temp/
 tmp/
 
 # Project-specific exclusions
-Business/
+Business/Feature/src/
 Template/
 scripts/
 README_CN.md
