@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useAIAgentStore } from '@/lib/store';
+import { generateUUID } from '@/lib/uuid';
 import { BrandingInfoCard } from './BrandingInfoCard';
 import { ProductMockupCard } from './ProductMockupCard';
 import { TransitionCard } from './TransitionCard';
@@ -16,7 +17,7 @@ export function MessageList() {
     if (!currentSessionId) return;
 
     const confirmMessage = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       role: 'user' as const,
       content: '[Confirmed branding] → Show products',
       timestamp: new Date(),
@@ -26,7 +27,7 @@ export function MessageList() {
     setStreaming(true);
 
     try {
-      const agentMessageId = crypto.randomUUID();
+      const agentMessageId = generateUUID();
       let agentResponse = '';
 
       addMessage({
@@ -55,7 +56,7 @@ export function MessageList() {
     } catch (error) {
       console.error('Error sending confirmation:', error);
       addMessage({
-        id: crypto.randomUUID(),
+        id: generateUUID(),
         role: 'agent',
         content: 'Sorry, I encountered an error. Please try again.',
         timestamp: new Date(),
@@ -69,7 +70,7 @@ export function MessageList() {
     if (!currentSessionId || isStreaming) return;
 
     const transitionMessage = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       role: 'user' as const,
       content: `[Transition: ${transitionId}]`,
       timestamp: new Date(),
@@ -78,7 +79,7 @@ export function MessageList() {
     setStreaming(true);
 
     try {
-      const agentMessageId = crypto.randomUUID();
+      const agentMessageId = generateUUID();
       let agentResponse = '';
 
       addMessage({
@@ -103,7 +104,7 @@ export function MessageList() {
     } catch (error) {
       console.error('Error sending transition:', error);
       addMessage({
-        id: crypto.randomUUID(),
+        id: generateUUID(),
         role: 'agent',
         content: 'Sorry, I encountered an error. Please try again.',
         timestamp: new Date(),
@@ -117,7 +118,7 @@ export function MessageList() {
     if (!currentSessionId) return;
 
     const uploadMessage = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       role: 'user' as const,
       content: 'I want to upload a different logo',
       timestamp: new Date(),
@@ -127,7 +128,7 @@ export function MessageList() {
     setStreaming(true);
 
     try {
-      const agentMessageId = crypto.randomUUID();
+      const agentMessageId = generateUUID();
       let agentResponse = '';
 
       addMessage({
@@ -152,7 +153,7 @@ export function MessageList() {
     } catch (error) {
       console.error('Error sending upload request:', error);
       addMessage({
-        id: crypto.randomUUID(),
+        id: generateUUID(),
         role: 'agent',
         content: 'Sorry, I encountered an error. Please try again.',
         timestamp: new Date(),

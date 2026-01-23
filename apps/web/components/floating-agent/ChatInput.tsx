@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Send, Paperclip } from 'lucide-react';
 import { useAIAgentStore } from '@/lib/store';
 import { apiClient } from '@/lib/api-client';
+import { generateUUID } from '@/lib/uuid';
 import { ComingSoonTooltip } from './ComingSoonTooltip';
 
 export function ChatInput() {
@@ -15,7 +16,7 @@ export function ChatInput() {
     if (!input.trim()) return;
 
     const userMessage = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       role: 'user' as const,
       content: input.trim(),
       timestamp: new Date(),
@@ -35,7 +36,7 @@ export function ChatInput() {
       }
 
       // Create agent message placeholder
-      const agentMessageId = crypto.randomUUID();
+      const agentMessageId = generateUUID();
       let agentResponse = '';
 
       // Add initial empty agent message
@@ -64,7 +65,7 @@ export function ChatInput() {
     } catch (error) {
       console.error('Error sending message:', error);
       addMessage({
-        id: crypto.randomUUID(),
+        id: generateUUID(),
         role: 'agent',
         content: 'Sorry, I encountered an error. Please try again.',
         timestamp: new Date(),

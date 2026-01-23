@@ -2,6 +2,7 @@
 
 import { useAIAgentStore } from '@/lib/store';
 import { apiClient } from '@/lib/api-client';
+import { generateUUID } from '@/lib/uuid';
 
 interface QuickAction {
   id: string;
@@ -85,7 +86,7 @@ export function QuickActionButtons() {
 
     // Add user message
     addMessage({
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       role: 'user',
       content: action.message,
       timestamp: new Date(),
@@ -97,7 +98,7 @@ export function QuickActionButtons() {
     if (!currentSessionId || isStreaming) return;
 
     const forceMessage = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       role: 'user' as const,
       content: '🚀 [FORCE] Show me all products now!',
       timestamp: new Date(),
@@ -107,7 +108,7 @@ export function QuickActionButtons() {
     setStreaming(true);
 
     try {
-      const agentMessageId = crypto.randomUUID();
+      const agentMessageId = generateUUID();
       let agentResponse = '';
 
       addMessage({
@@ -137,7 +138,7 @@ export function QuickActionButtons() {
     } catch (error) {
       console.error('Error forcing products:', error);
       addMessage({
-        id: crypto.randomUUID(),
+        id: generateUUID(),
         role: 'agent',
         content: 'Sorry, I encountered an error. Please try again.',
         timestamp: new Date(),
@@ -152,7 +153,7 @@ export function QuickActionButtons() {
     if (!currentSessionId || isStreaming) return;
 
     const forceMessage = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       role: 'user' as const,
       content: '🎨 [FORCE] Generate a ceramic mug mockup with my logo now!',
       timestamp: new Date(),
@@ -162,7 +163,7 @@ export function QuickActionButtons() {
     setStreaming(true);
 
     try {
-      const agentMessageId = crypto.randomUUID();
+      const agentMessageId = generateUUID();
       let agentResponse = '';
 
       addMessage({
@@ -195,7 +196,7 @@ export function QuickActionButtons() {
     } catch (error) {
       console.error('Error forcing mockup:', error);
       addMessage({
-        id: crypto.randomUUID(),
+        id: generateUUID(),
         role: 'agent',
         content: 'Sorry, I encountered an error. Please try again.',
         timestamp: new Date(),
