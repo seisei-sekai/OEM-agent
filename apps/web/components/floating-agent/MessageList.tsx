@@ -247,8 +247,8 @@ function QuickActionCard({ icon, title, disabled = false }: { icon: string; titl
   return (
     <button
       className={`p-4 border border-gray-200 rounded-lg text-left transition-colors ${disabled
-          ? 'opacity-50 pointer-events-none'
-          : 'hover:border-purple-300 hover:bg-purple-50'
+        ? 'opacity-50 pointer-events-none'
+        : 'hover:border-purple-300 hover:bg-purple-50'
         }`}
     >
       <div className="text-3xl mb-2">{icon}</div>

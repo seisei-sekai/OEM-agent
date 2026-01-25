@@ -1,4 +1,4 @@
-# Cursor Rules 
+# Cursor Rules for ClassArranger Project
 
 ## Rule 1: Markdown Files Management
 
@@ -228,3 +228,19 @@ RUN pnpm build
 - Monitor and tune query performance with profiling tools
 - Store sensitive data encrypted at rest and in transit
 
+Time Spent: 9-13 hours
+
+OEM AI Agent Demo Location:
+ http://34.84.2.46:3000/
+
+Github Location:
+ https://github.com/seisei-sekai/OEM-agent
+
+CodeBase Structure: 
+https://github.com/seisei-sekai/OEM-agent/blob/main/docs/PROJECT_GUIDE_EN.md
+
+Tech Stack Detail:
+https://github.com/seisei-sekai/OEM-agent/blob/main/docs/TechStack.md
+
+LangGraph Graph Logic: 
+https://github.com/seisei-sekai/OEM-agent/blob/main/docs/LANGGRAPH_GUIDE_EN.md

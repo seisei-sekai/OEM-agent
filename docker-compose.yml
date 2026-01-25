@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: ./apps/web/Dockerfile
     ports:
-      - "3000:3000"  # Different from 5173
+      - "3000:3000" # Different from 5173
     environment:
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:4000}
       - NODE_ENV=production
@@ -24,7 +24,7 @@ services:
       context: .
       dockerfile: ./apps/api/Dockerfile
     ports:
-      - "4000:4000"  # Different from 8000
+      - "4000:4000" # Different from 8000
     environment:
       - PORT=4000
       - NODE_ENV=development
@@ -51,7 +51,7 @@ services:
   mongodb:
     image: mongo:7.0
     ports:
-      - "27018:27017"  # Map to 27018 externally to avoid conflict with other projects
+      - "27018:27017" # Map to 27018 externally to avoid conflict with other projects
     volumes:
       - mongodb_data:/data/db
       - ./docker/mongo-init:/docker-entrypoint-initdb.d
@@ -61,7 +61,7 @@ services:
       - oem-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -70,7 +70,7 @@ services:
   weaviate:
     image: semitechnologies/weaviate:1.24.1
     ports:
-      - "9080:8080"  # Map to 9080 externally to avoid conflicts
+      - "9080:8080" # Map to 9080 externally to avoid conflicts
     environment:
       - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
       - PERSISTENCE_DATA_PATH=/var/lib/weaviate
@@ -83,7 +83,7 @@ services:
       - oem-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/v1/.well-known/ready"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/v1/.well-known/ready" ]
       interval: 10s
       timeout: 5s
       retries: 5

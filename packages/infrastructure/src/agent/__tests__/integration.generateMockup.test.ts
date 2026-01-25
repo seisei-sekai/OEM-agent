@@ -71,7 +71,7 @@ describe('Integration: Generate Mockup Button Flow', () => {
           const nodeNames = Object.keys(chunk);
           executionLog.push(...nodeNames);
           states.push(chunk);
-          
+
           console.log('🔍 Executed node:', nodeNames[0]);
           if (chunk[nodeNames[0]]) {
             console.log('   State:', {
@@ -88,32 +88,32 @@ describe('Integration: Generate Mockup Button Flow', () => {
 
       // Assertions
       console.log('\n📊 Execution Log:', executionLog);
-      
+
       // TEST 1: initialRouter should be called
       expect(executionLog).toContain('initialRouter');
-      
+
       // TEST 2: generateMockup should be called (NOT classifyIntent)
       expect(executionLog).toContain('generateMockup');
-      
+
       // TEST 3: Should NOT go through classifyIntent
       expect(executionLog).not.toContain('classifyIntent');
-      
+
       // TEST 4: Should NOT go through extractBranding
       expect(executionLog).not.toContain('extractBranding');
-      
+
       // TEST 5: Final state should have lastNodeVisited = 'generateMockup'
       const finalState = states[states.length - 1];
       const finalNodeName = Object.keys(finalState)[0];
       expect(finalState[finalNodeName].lastNodeVisited).toBe('generateMockup');
-      
+
       // TEST 6: Should have mockup in messages
       const lastMessage = finalState[finalNodeName].messages[finalState[finalNodeName].messages.length - 1];
       console.log('\n📝 Last message:', lastMessage.content);
-      
+
       // Message should contain mockup URL or mockup generation confirmation
       const messageContent = typeof lastMessage.content === 'string' ? lastMessage.content : '';
       expect(
-        messageContent.includes('mockup') || 
+        messageContent.includes('mockup') ||
         messageContent.includes('Mug') ||
         messageContent.includes('https://')
       ).toBe(true);
@@ -149,7 +149,7 @@ describe('Integration: Generate Mockup Button Flow', () => {
       }
 
       console.log('\n📊 Execution Log:', executionLog);
-      
+
       // Should go directly to generateMockup, NOT welcome
       expect(executionLog).toContain('generateMockup');
       expect(executionLog).not.toContain('welcome');
@@ -166,6 +166,9 @@ describe('Integration: Generate Mockup Button Flow', () => {
         isFirstMessage: false,
         executionHistory: [],
         turnCount: 0,
+        currentIntent: 'idle',
+        context: {},
+        needsEscalation: false,
       };
 
       // We can't directly test routeInitial since it's not exported
@@ -229,7 +232,7 @@ describe('Integration: Generate Mockup Button Flow', () => {
       };
 
       const mockupUrl = 'https://oaidalleapiprodscus.blob.core.windows.net/private/test-mockup.png';
-      
+
       const stream = await graph.stream(input, {
         configurable: {
           generateMockupUseCase: {
@@ -255,11 +258,12 @@ describe('Integration: Generate Mockup Button Flow', () => {
       console.log('\n📝 Last AI message:', lastAIMessage?.content);
 
       expect(lastAIMessage).toBeTruthy();
-      
+
       // The message should contain the mockup URL
       const content = typeof lastAIMessage.content === 'string' ? lastAIMessage.content : '';
       expect(content).toContain(mockupUrl);
     });
   });
 });
+
 

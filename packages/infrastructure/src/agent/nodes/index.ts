@@ -1,3 +1,4 @@
+export { initialRouterNode } from './initialRouterNode.js';
 export { welcomeNode } from './welcomeNode.js';
 export { intentClassificationNode } from './intentClassificationNode.js';
 export { brandingExtractionNode } from './brandingExtractionNode.js';
