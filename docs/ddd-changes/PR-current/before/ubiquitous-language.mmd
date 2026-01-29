@@ -1,0 +1,41 @@
+graph TB
+    subgraph Entities["Entities - 实体"]
+        BrandingInfo["BrandingInfo<br/>聚合根 (Aggregate Root)<br/>0 properties"]
+        ChatSession["ChatSession<br/>聚合根 (Aggregate Root)<br/>0 properties"]
+        Message["Message<br/>聚合根 (Aggregate Root)<br/>0 properties"]
+        Product["Product<br/>实体 (Entity)<br/>0 properties"]
+    end
+    
+    subgraph ValueObjects["Value Objects - 值对象"]
+        ColorCode["ColorCode<br/>值对象<br/>Immutable"]
+        LogoImage["LogoImage<br/>值对象<br/>Immutable"]
+        Price["Price<br/>值对象<br/>Immutable"]
+        SessionId["SessionId<br/>值对象<br/>Immutable"]
+        Timestamp["Timestamp<br/>值对象<br/>Immutable"]
+    end
+    
+    subgraph DomainEvents["Domain Events - 领域事件"]
+        BrandingExtracted["BrandingExtracted<br/>领域事件<br/>Event"]
+        BaseDomainEvent["BaseDomainEvent<br/>领域事件<br/>Event"]
+        MessageSent["MessageSent<br/>领域事件<br/>Event"]
+        ProductsRecommended["ProductsRecommended<br/>领域事件<br/>Event"]
+        SessionStarted["SessionStarted<br/>领域事件<br/>Event"]
+    end
+    
+    subgraph DomainServices["Domain Services - 领域服务"]
+        CostCalculator["CostCalculator<br/>领域服务<br/>Pure Logic"]
+    end
+    
+    subgraph Repositories["Repository Interfaces - 仓储接口"]
+        IBrandingRepository["IBrandingRepository<br/>仓储接口<br/>for Branding"]
+        IChatSessionRepository["IChatSessionRepository<br/>仓储接口<br/>for ChatSession"]
+        IProductCatalogRepository["IProductCatalogRepository<br/>仓储接口<br/>for ProductCatalog"]
+    end
+    
+    
+    
+    style Entities fill:#ffcccc
+    style ValueObjects fill:#ffe6cc
+    style DomainEvents fill:#ccffcc
+    style DomainServices fill:#ccccff
+    style Repositories fill:#e6ccff

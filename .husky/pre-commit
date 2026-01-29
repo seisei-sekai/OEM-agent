@@ -5,5 +5,9 @@
 echo "📸 Generating DDD snapshot..."
 pnpm ddd:snapshot
 
+# Generate DDD diff diagrams
+echo "📊 Generating DDD diff diagrams..."
+tsx scripts/hooks/pre-commit-ddd-diff.ts
+
 # Run lint-staged
 pnpm lint-staged
