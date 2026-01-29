@@ -75,13 +75,26 @@ gcloud compute ssh $INSTANCE_NAME \
         echo '🛑 Stopping services...'
         sudo docker-compose down || true
         
-        # Clean Docker cache for fresh build
-        echo '🧹 Cleaning Docker build cache...'
-        sudo docker builder prune -f || true
+        # Ask if user wants to clean cache and rebuild
+        read -p \$'\\033[1;33mDo you want to clean Docker cache and force rebuild? [y/N]:\\033[0m ' -n 1 -r REBUILD_CHOICE
+        echo
         
-        # Rebuild and start services (no cache to ensure latest code)
-        echo '🔨 Building and starting services...'
-        sudo docker-compose build --no-cache
+        if [[ \$REBUILD_CHOICE =~ ^[Yy]$ ]]; then
+            # Clean Docker cache for fresh build
+            echo '🧹 Cleaning Docker build cache...'
+            sudo docker builder prune -f || true
+            
+            # Rebuild without cache (ensures latest config)
+            echo '🔨 Rebuilding from scratch (no cache)...'
+            sudo docker-compose build --no-cache
+        else
+            # Use cache for faster build
+            echo '🔨 Building with cache (faster)...'
+            sudo docker-compose build
+        fi
+        
+        # Start services
+        echo '🚀 Starting services...'
         sudo docker-compose up -d
         
         # Wait for services to be ready
