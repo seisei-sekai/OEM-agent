@@ -1,0 +1,322 @@
+{
+  "prNumber": "current",
+  "baseBranch": "main",
+  "timestamp": "2026-01-29T20:00:51.694Z",
+  "changes": {
+    "files": [
+      {
+        "file": "apps/api/src/routes/__tests__/health.test.ts",
+        "changeType": "modified",
+        "insertions": 1,
+        "deletions": 1
+      },
+      {
+        "file": "apps/web/app/test-timestamps/page.tsx",
+        "changeType": "added",
+        "insertions": 131,
+        "deletions": 0
+      },
+      {
+        "file": "apps/web/components/chat/MessageBubble.tsx",
+        "changeType": "added",
+        "insertions": 63,
+        "deletions": 0
+      },
+      {
+        "file": "apps/web/components/floating-agent/ChatInput.tsx",
+        "changeType": "modified",
+        "insertions": 23,
+        "deletions": 3
+      },
+      {
+        "file": "apps/web/components/floating-agent/MessageList.tsx",
+        "changeType": "modified",
+        "insertions": 92,
+        "deletions": 12
+      },
+      {
+        "file": "apps/web/lib/store.ts",
+        "changeType": "modified",
+        "insertions": 81,
+        "deletions": 6
+      },
+      {
+        "file": "packages/application/src/use-cases/__tests__/LoadChatHistoryUseCase.test.ts",
+        "changeType": "added",
+        "insertions": 120,
+        "deletions": 0
+      },
+      {
+        "file": "packages/application/src/use-cases/__tests__/SendMessageUseCase.test.ts",
+        "changeType": "modified",
+        "insertions": 1,
+        "deletions": 1
+      },
+      {
+        "file": "packages/domain/src/entities/Message.ts",
+        "changeType": "added",
+        "insertions": 21,
+        "deletions": 0
+      },
+      {
+        "file": "packages/domain/src/entities/__tests__/Message.test.ts",
+        "changeType": "added",
+        "insertions": 79,
+        "deletions": 0
+      },
+      {
+        "file": "packages/domain/src/value-objects/Timestamp.ts",
+        "changeType": "added",
+        "insertions": 153,
+        "deletions": 0
+      },
+      {
+        "file": "packages/domain/src/value-objects/__tests__/Timestamp.test.ts",
+        "changeType": "added",
+        "insertions": 131,
+        "deletions": 0
+      },
+      {
+        "file": "packages/infrastructure/src/agent/__tests__/graph.integration.test.ts",
+        "changeType": "added",
+        "insertions": 3,
+        "deletions": 0
+      },
+      {
+        "file": "packages/infrastructure/src/agent/__tests__/integration.generateMockup.test.ts",
+        "changeType": "added",
+        "insertions": 7,
+        "deletions": 0
+      },
+      {
+        "file": "packages/infrastructure/src/agent/__tests__/sse.mockup.test.ts",
+        "changeType": "added",
+        "insertions": 5,
+        "deletions": 0
+      },
+      {
+        "file": "packages/infrastructure/src/agent/nodes/__tests__/intentClassificationNode.test.ts",
+        "changeType": "modified",
+        "insertions": 1,
+        "deletions": 1
+      },
+      {
+        "file": "packages/infrastructure/src/ai/__tests__/MockupGeneratorService.test.ts",
+        "changeType": "modified",
+        "insertions": 3,
+        "deletions": 2
+      },
+      {
+        "file": "packages/infrastructure/vitest.config.ts",
+        "changeType": "added",
+        "insertions": 7,
+        "deletions": 0
+      }
+    ],
+    "dddComponents": [
+      {
+        "layer": "api",
+        "componentType": "test",
+        "componentName": "health.test",
+        "file": "apps/api/src/routes/__tests__/health.test.ts",
+        "changeType": "modified"
+      },
+      {
+        "layer": "application",
+        "componentType": "test",
+        "componentName": "LoadChatHistoryUseCase.test",
+        "file": "packages/application/src/use-cases/__tests__/LoadChatHistoryUseCase.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "application",
+        "componentType": "test",
+        "componentName": "SendMessageUseCase.test",
+        "file": "packages/application/src/use-cases/__tests__/SendMessageUseCase.test.ts",
+        "changeType": "modified"
+      },
+      {
+        "layer": "domain",
+        "componentType": "entity",
+        "componentName": "Message",
+        "file": "packages/domain/src/entities/Message.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "domain",
+        "componentType": "test",
+        "componentName": "Message.test",
+        "file": "packages/domain/src/entities/__tests__/Message.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "domain",
+        "componentType": "valueObject",
+        "componentName": "Timestamp",
+        "file": "packages/domain/src/value-objects/Timestamp.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "domain",
+        "componentType": "test",
+        "componentName": "Timestamp.test",
+        "file": "packages/domain/src/value-objects/__tests__/Timestamp.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "graph.integration.test",
+        "file": "packages/infrastructure/src/agent/__tests__/graph.integration.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "integration.generateMockup.test",
+        "file": "packages/infrastructure/src/agent/__tests__/integration.generateMockup.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "sse.mockup.test",
+        "file": "packages/infrastructure/src/agent/__tests__/sse.mockup.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "intentClassificationNode.test",
+        "file": "packages/infrastructure/src/agent/nodes/__tests__/intentClassificationNode.test.ts",
+        "changeType": "modified"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "MockupGeneratorService.test",
+        "file": "packages/infrastructure/src/ai/__tests__/MockupGeneratorService.test.ts",
+        "changeType": "modified"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "other",
+        "componentName": "",
+        "file": "packages/infrastructure/vitest.config.ts",
+        "changeType": "added"
+      }
+    ],
+    "summary": {
+      "totalFiles": 18,
+      "additions": 922,
+      "deletions": 26,
+      "domainChanges": 4,
+      "applicationChanges": 2,
+      "infrastructureChanges": 6,
+      "testChanges": 10
+    }
+  },
+  "dddComponents": {
+    "domain": {
+      "entities": [
+        {
+          "layer": "domain",
+          "componentType": "entity",
+          "componentName": "Message",
+          "file": "packages/domain/src/entities/Message.ts",
+          "changeType": "added"
+        }
+      ],
+      "valueObjects": [
+        {
+          "layer": "domain",
+          "componentType": "valueObject",
+          "componentName": "Timestamp",
+          "file": "packages/domain/src/value-objects/Timestamp.ts",
+          "changeType": "added"
+        }
+      ],
+      "services": []
+    },
+    "application": {
+      "useCases": [],
+      "dtos": []
+    },
+    "infrastructure": {
+      "repositories": [],
+      "services": []
+    },
+    "tests": [
+      {
+        "layer": "api",
+        "componentType": "test",
+        "componentName": "health.test",
+        "file": "apps/api/src/routes/__tests__/health.test.ts",
+        "changeType": "modified"
+      },
+      {
+        "layer": "application",
+        "componentType": "test",
+        "componentName": "LoadChatHistoryUseCase.test",
+        "file": "packages/application/src/use-cases/__tests__/LoadChatHistoryUseCase.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "application",
+        "componentType": "test",
+        "componentName": "SendMessageUseCase.test",
+        "file": "packages/application/src/use-cases/__tests__/SendMessageUseCase.test.ts",
+        "changeType": "modified"
+      },
+      {
+        "layer": "domain",
+        "componentType": "test",
+        "componentName": "Message.test",
+        "file": "packages/domain/src/entities/__tests__/Message.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "domain",
+        "componentType": "test",
+        "componentName": "Timestamp.test",
+        "file": "packages/domain/src/value-objects/__tests__/Timestamp.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "graph.integration.test",
+        "file": "packages/infrastructure/src/agent/__tests__/graph.integration.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "integration.generateMockup.test",
+        "file": "packages/infrastructure/src/agent/__tests__/integration.generateMockup.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "sse.mockup.test",
+        "file": "packages/infrastructure/src/agent/__tests__/sse.mockup.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "intentClassificationNode.test",
+        "file": "packages/infrastructure/src/agent/nodes/__tests__/intentClassificationNode.test.ts",
+        "changeType": "modified"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "MockupGeneratorService.test",
+        "file": "packages/infrastructure/src/ai/__tests__/MockupGeneratorService.test.ts",
+        "changeType": "modified"
+      }
+    ]
+  }
+}

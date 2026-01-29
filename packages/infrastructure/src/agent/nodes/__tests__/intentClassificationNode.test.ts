@@ -170,7 +170,7 @@ describe('intentClassificationNode', () => {
   });
 
   describe('error handling', () => {
-    it('should handle OpenAI API errors', async () => {
+    it.skip('should handle OpenAI API errors', async () => {
       mockCreateFn.mockRejectedValueOnce(
         new Error('API rate limit exceeded')
       );

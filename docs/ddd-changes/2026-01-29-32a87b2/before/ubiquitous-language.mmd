@@ -1,0 +1,41 @@
+graph TB
+    subgraph Entities["Entities"]
+        BrandingInfo["BrandingInfo<br/>Aggregate Root<br/>0 properties"]
+        ChatSession["ChatSession<br/>Aggregate Root<br/>0 properties"]
+        Message["Message<br/>Aggregate Root<br/>0 properties"]
+        Product["Product<br/>Entity<br/>0 properties"]
+    end
+    
+    subgraph ValueObjects["Value Objects"]
+        ColorCode["ColorCode<br/>Value Object<br/>Immutable"]
+        LogoImage["LogoImage<br/>Value Object<br/>Immutable"]
+        Price["Price<br/>Value Object<br/>Immutable"]
+        SessionId["SessionId<br/>Value Object<br/>Immutable"]
+        Timestamp["Timestamp<br/>Value Object<br/>Immutable"]
+    end
+    
+    subgraph DomainEvents["Domain Events"]
+        BrandingExtracted["BrandingExtracted<br/>Domain Event<br/>Event"]
+        BaseDomainEvent["BaseDomainEvent<br/>Domain Event<br/>Event"]
+        MessageSent["MessageSent<br/>Domain Event<br/>Event"]
+        ProductsRecommended["ProductsRecommended<br/>Domain Event<br/>Event"]
+        SessionStarted["SessionStarted<br/>Domain Event<br/>Event"]
+    end
+    
+    subgraph DomainServices["Domain Services"]
+        CostCalculator["CostCalculator<br/>Domain Service<br/>Pure Logic"]
+    end
+    
+    subgraph Repositories["Repository Interfaces"]
+        IBrandingRepository["IBrandingRepository<br/>Repository Interface<br/>for Branding"]
+        IChatSessionRepository["IChatSessionRepository<br/>Repository Interface<br/>for ChatSession"]
+        IProductCatalogRepository["IProductCatalogRepository<br/>Repository Interface<br/>for ProductCatalog"]
+    end
+    
+    
+    
+    style Entities fill:#ffcccc
+    style ValueObjects fill:#ffe6cc
+    style DomainEvents fill:#ccffcc
+    style DomainServices fill:#ccccff
+    style Repositories fill:#e6ccff

@@ -1,0 +1,80 @@
+classDiagram
+    
+    class BrandingInfo {
+        <<Aggregate Root>>
+        
+        +create(data)
+        +fromData(data)
+        +getId()
+    }
+    
+
+    class ChatSession {
+        <<Aggregate Root>>
+        
+        +create(userId)
+        +fromData(data)
+        +getId()
+    }
+    
+
+    class Message {
+        <<Aggregate Root>>
+        
+        +create(data)
+        +fromData(data)
+        +getId()
+    }
+    
+
+    class Product {
+        <<Entity>>
+        
+        +fromData(data)
+        +getId()
+        +getName()
+    }
+    
+    
+    
+    class ColorCode {
+        <<Value Object>>
+        
+        +create()
+        +toString()
+    }
+    
+
+    class LogoImage {
+        <<Value Object>>
+        
+        +create()
+        +getUrl()
+    }
+    
+
+    class Price {
+        <<Value Object>>
+        
+        +create()
+        +getAmount()
+    }
+    
+
+    class SessionId {
+        <<Value Object>>
+        
+        +create()
+        +fromString()
+    }
+    
+
+    class Timestamp {
+        <<Value Object>>
+        
+        +format()
+        +toRelative()
+    }
+    
+    
+    

@@ -1,7 +1,7 @@
 # Documentation Index
 
 **Created:** 2026-01-23-07-45 (Tokyo Time)  
-**Last Updated:** 2026-01-25-21-56 (Tokyo Time)  
+**Last Updated:** 2026-01-29-23:30 (Tokyo Time)  
 **Purpose:** Central index for all project documentation
 
 ---
@@ -19,6 +19,60 @@ System architecture and design patterns following Domain-Driven Design (DDD) pri
 - Application layer patterns
 - Infrastructure implementations
 - Technology stack decisions
+
+#### [DDD_VISUALIZATION.md](./DDD_VISUALIZATION.md) 📊 NEW
+Automated DDD architecture visualization and validation.
+- Generate interactive dependency graphs
+- Validate DDD layer separation rules
+- Detect architectural violations
+- Visual architecture overview with color coding
+- Commands: `pnpm ddd:validate`, `pnpm ddd:graph`, `pnpm ddd:all`
+
+#### [DDD_QUICK_START.md](./DDD_QUICK_START.md) 🚀 QUICK START
+Quick start guide for DDD visualization (Chinese).
+- Generated files overview
+- Quick usage commands
+- Use cases and best practices
+- Start here: `open docs/ddd-report.html`
+
+#### [DDD_IMPLEMENTATION_SUMMARY.md](./DDD_IMPLEMENTATION_SUMMARY.md) 📋 SUMMARY
+Complete implementation summary of DDD visualization setup.
+- Tools installed (dependency-cruiser + graphviz)
+- Generated outputs (3 visualizations + docs)
+- Validation results (no DDD violations ✅)
+- Available commands and best practices
+- CI/CD integration guide
+
+#### [DDD_MERMAID_GUIDE.md](./DDD_MERMAID_GUIDE.md) 🎨 MERMAID
+Complete guide for generating DDD diagrams using Mermaid.
+- Three approaches: dependency-cruiser, typescript-graph, hand-written
+- Mermaid vs SVG comparison
+- Strategic design examples
+- Domain model class diagrams
+- GitHub and VS Code integration
+
+#### [ddd-models/](./ddd-models/README.md) 🎯 AUTO-GENERATED DDD MODELS
+**Complete DDD + Scrum documentation system for stakeholder communication**
+- **Auto-generated from code** - Always up-to-date with implementation
+- **9 professional diagrams** - Mermaid + SVG dual format (18 files total)
+- **Covers all DDD concepts** - Strategic design, tactical design, aggregates, ubiquitous language
+- **Scrum integration** - Product backlog, sprint planning, event storming
+- **Real-time updates** - Watch mode monitors code changes
+- **CI/CD automated** - Auto-commits on code push
+- **Commands:** `pnpm ddd:docs`, `pnpm ddd:watch` (auto-update)
+- **Start here:** `open docs/ddd-models/0-summary/stakeholder-summary.svg`
+- **Quick guide:** [STAKEHOLDER_GUIDE.md](./ddd-models/STAKEHOLDER_GUIDE.md)
+
+#### [WORKFLOW_GUIDE.md](./WORKFLOW_GUIDE.md) 🔄 TDD WORKFLOW ⭐ NEW
+**Complete Scrum-based TDD workflow with DDD diagram versioning**
+- **Scrum integration** - Requirement templates, Notion linkage
+- **TDD automation** - Auto-generate tests, stubs, design docs
+- **DDD versioning** - Snapshot on every commit
+- **PR visualization** - Side-by-side before/after diagrams
+- **Code review assistance** - AI-identified focus areas
+- **CI/CD validation** - Auto-test, validate, comment on PRs
+- **Commands:** `pnpm workflow:new-feature`, `pnpm workflow:prepare-pr`
+- **Implementation:** [TDD_WORKFLOW_IMPLEMENTATION.md](./TDD_WORKFLOW_IMPLEMENTATION.md)
 
 #### [TechStack.md](./TechStack.md)
 Complete technology stack and tooling used in the project.

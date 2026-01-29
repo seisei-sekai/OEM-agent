@@ -7,6 +7,17 @@ import { apiClient } from '@/lib/api-client';
 import { generateUUID } from '@/lib/uuid';
 import { ComingSoonTooltip } from './ComingSoonTooltip';
 
+/**
+ * Format timestamp for new messages
+ */
+function formatTimestamp(date: Date): string {
+  return date.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
+}
+
 export function ChatInput() {
   const [input, setInput] = useState('');
   const { currentSessionId, addMessage, updateMessage, updateMessageAction, setStreaming, setCurrentSession, brandingConfirmed } = useAIAgentStore();
@@ -15,11 +26,14 @@ export function ChatInput() {
     e.preventDefault();
     if (!input.trim()) return;
 
+    const timestamp = new Date();
     const userMessage = {
       id: generateUUID(),
       role: 'user' as const,
       content: input.trim(),
-      timestamp: new Date(),
+      timestamp,
+      formattedTimestamp: formatTimestamp(timestamp),
+      relativeTimestamp: 'just now',
     };
 
     addMessage(userMessage);
@@ -40,11 +54,14 @@ export function ChatInput() {
       let agentResponse = '';
 
       // Add initial empty agent message
+      const agentTimestamp = new Date();
       addMessage({
         id: agentMessageId,
         role: 'agent',
         content: '',
-        timestamp: new Date(),
+        timestamp: agentTimestamp,
+        formattedTimestamp: formatTimestamp(agentTimestamp),
+        relativeTimestamp: 'just now',
       });
 
       // Stream response
@@ -64,11 +81,14 @@ export function ChatInput() {
       }
     } catch (error) {
       console.error('Error sending message:', error);
+      const errorTimestamp = new Date();
       addMessage({
         id: generateUUID(),
         role: 'agent',
         content: 'Sorry, I encountered an error. Please try again.',
-        timestamp: new Date(),
+        timestamp: errorTimestamp,
+        formattedTimestamp: formatTimestamp(errorTimestamp),
+        relativeTimestamp: 'just now',
       });
     } finally {
       setStreaming(false);
