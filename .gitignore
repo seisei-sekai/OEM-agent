@@ -59,6 +59,9 @@ tfplan
 # Turbo
 .turbo/
 
+# TypeScript
+*.tsbuildinfo
+
 # Misc
 *.pem
 *.key
