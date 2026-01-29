@@ -57,6 +57,10 @@ if [[ $REBUILD_REPLY =~ ^[Yy]$ ]]; then
     REBUILD_FLAG="--no-cache"
 fi
 
+# Get current branch to deploy
+DEPLOY_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+echo -e "${YELLOW}📌 Deploying branch: $DEPLOY_BRANCH${NC}"
+
 # Step 2: SSH to GCP instance and deploy
 echo -e "${GREEN}🔧 Connecting to GCP instance...${NC}"
 
@@ -77,10 +81,12 @@ gcloud compute ssh $INSTANCE_NAME \
         echo '🔧 Configuring Git safe directory...'
         sudo git config --global --add safe.directory /opt/oem-agent
         
-        # Pull latest changes
+        # Pull latest changes from the deployment branch
         echo '📥 Pulling latest code from GitHub...'
+        echo '   Branch: $DEPLOY_BRANCH'
         sudo git fetch origin
-        sudo git pull origin \$(git rev-parse --abbrev-ref HEAD)
+        sudo git checkout $DEPLOY_BRANCH || sudo git checkout -b $DEPLOY_BRANCH origin/$DEPLOY_BRANCH
+        sudo git pull origin $DEPLOY_BRANCH
         
         # Stop running services
         echo '🛑 Stopping services...'
