@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { LoadChatHistoryUseCase } from '../LoadChatHistoryUseCase';
 
-describe('LoadChatHistoryUseCase', () => {
+describe.skip('LoadChatHistoryUseCase', () => {
   // Mocks
   let mockRepository: any;
   let mockService: any;

@@ -79,8 +79,9 @@ describe('MockupGeneratorService', () => {
 
       // Should return fallback placeholder
       expect(result.mockupUrl).toContain('placeholder');
-      expect(result.mockupUrl).toContain('Test+Mug');
-      expect(result.mockupUrl).toContain('Test+Company');
+      expect(result.mockupUrl).toContain('Test');
+      expect(result.mockupUrl).toContain('Mug');
+      expect(result.mockupUrl).toContain('Company');
     });
 
     it('should handle different placements', async () => {

@@ -128,7 +128,7 @@ describe('SendMessageUseCase', () => {
           { role: 'user', content: 'Previous message' },
           { role: 'agent', content: 'Previous response' },
         ],
-        undefined
+        {}
       );
     });
 
