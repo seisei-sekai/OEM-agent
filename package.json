@@ -31,6 +31,7 @@
     "workflow:generate-tests": "tsx scripts/workflows/generate-tests.ts",
     "workflow:generate-stubs": "tsx scripts/workflows/generate-code-stubs.ts",
     "workflow:prepare-pr": "tsx scripts/workflows/prepare-pr.ts",
+    "deploy:gcp": "./scripts/deploy-to-gcp.sh",
     "prepare": "husky"
   },
   "devDependencies": {

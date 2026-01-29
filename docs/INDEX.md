@@ -166,6 +166,15 @@ Essential guide for avoiding TypeScript compilation issues in Docker.
 
 ### Production Deployment
 
+#### [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) 🚀 DEPLOYMENT GUIDE ⭐ NEW
+**Quick and automated deployment to GCP**
+- **One-command deploy** - `pnpm deploy:gcp`
+- **Automated workflow** - Pull, rebuild, restart services
+- **SSH automation** - No manual login required
+- **Troubleshooting** - Common issues and solutions
+- **Monitoring** - Health checks and logs
+- **CI/CD ready** - GitHub Actions integration
+
 #### [TERRAFORM_DEPLOYMENT_CN.md](./TERRAFORM_DEPLOYMENT_CN.md) ☁️ GCP DEPLOYMENT
 Complete Terraform GCP deployment guide (Chinese).
 - Prerequisites and GCP project setup
