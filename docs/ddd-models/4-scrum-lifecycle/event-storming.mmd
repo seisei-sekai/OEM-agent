@@ -1,30 +1,30 @@
 timeline
     title Event Storming - Domain Event Flow
     
-    section User Entry - 用户进入
+    section User Entry
       User visits website : Page loads
       Floating button appears : UI renders
     
-    section Start Conversation - 开始对话
+    section Start Conversation
       User clicks button : SessionStarted event
       Welcome screen shows : Quick action cards
     
-    section Branding Extraction - 品牌提取
+    section Branding Extraction
       User selects branded merch : Enters branding flow
       User provides URL or file : Triggers extraction
       System extracts branding : BrandingExtracted event
     
-    section Product Recommendation - 产品推荐
+    section Product Recommendation
       User confirms logo : Triggers recommendation
       System generates mockups : Calls AI service
       Products displayed : ProductsRecommended event
     
-    section Refinement - 精细化
+    section Refinement
       User views products : Browse interactions
       User loads more : Pagination request
       User selects product : View details
       
-    section All Events - 所有领域事件
+    section All Events
       BrandingExtracted : Domain event
       BaseDomainEvent : Domain event
       MessageSent : Domain event

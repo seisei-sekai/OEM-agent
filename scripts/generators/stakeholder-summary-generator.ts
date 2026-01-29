@@ -7,18 +7,18 @@ export function generateStakeholderSummary(
   const aggregates = domainData.entities.filter((e) => e.isAggregateRoot);
 
   return `graph TB
-    subgraph Context["System Context - 系统上下文"]
-        BC["OEM Agent Context<br/>核心有界上下文<br/>单一bounded context"]
+    subgraph Context["System Context"]
+        BC["OEM Agent Context<br/>Single Bounded Context"]
     end
     
-    subgraph Subdomains["Sub-domains - 子域划分"]
-        Conv["Conversation Management<br/>会话管理<br/>${domainData.entities.filter((e) => e.name.includes('Session') || e.name.includes('Message')).length} entities"]
-        Prod["Product Catalog<br/>产品目录<br/>${domainData.entities.filter((e) => e.name.includes('Product')).length} entities"]
-        Brand["Branding Extraction<br/>品牌提取<br/>${domainData.entities.filter((e) => e.name.includes('Branding')).length} entities"]
-        Cost["Cost Calculation<br/>成本计算<br/>${domainData.domainServices.length} services"]
+    subgraph Subdomains["Sub-domains"]
+        Conv["Conversation Management<br/>${domainData.entities.filter((e) => e.name.includes('Session') || e.name.includes('Message')).length} entities"]
+        Prod["Product Catalog<br/>${domainData.entities.filter((e) => e.name.includes('Product')).length} entities"]
+        Brand["Branding Extraction<br/>${domainData.entities.filter((e) => e.name.includes('Branding')).length} entities"]
+        Cost["Cost Calculation<br/>${domainData.domainServices.length} services"]
     end
     
-    subgraph Aggregates["Key Aggregates - 关键聚合"]
+    subgraph Aggregates["Key Aggregates"]
         ${aggregates
           .map(
             (agg, idx) =>
@@ -27,14 +27,14 @@ export function generateStakeholderSummary(
           .join('\n        ')}
     end
     
-    subgraph UseCases["Core Use Cases - 核心用例"]
+    subgraph UseCases["Core Use Cases"]
         UC1["${applicationData.useCases.length} Use Cases"]
-        UC2["Complete User Journey<br/>完整用户旅程"]
+        UC2["Complete User Journey"]
     end
     
-    subgraph Events["Domain Events - 领域事件"]
+    subgraph Events["Domain Events"]
         EV1["${domainData.domainEvents.length} Events"]
-        EV2["Event Sourcing Support<br/>支持事件溯源"]
+        EV2["Event Sourcing Support"]
     end
     
     BC --> Conv
