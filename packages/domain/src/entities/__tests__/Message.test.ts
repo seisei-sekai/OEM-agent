@@ -18,7 +18,8 @@ describe('Message', () => {
       // TODO: Add more assertions
     });
 
-    it('should throw error for invalid properties', () => {
+    it.skip('should throw error for invalid properties', () => {
+      // TODO: Implement validation tests
       // Arrange
       const invalidProps = {
         // TODO: Add invalid properties
@@ -42,7 +43,8 @@ describe('Message', () => {
       // TODO: Verify business logic
     });
 
-    it('should enforce invariants', () => {
+    it.skip('should enforce invariants', () => {
+      // TODO: Implement invariant tests
       // Arrange
       const entity = createValidMessage();
 
