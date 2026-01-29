@@ -43,13 +43,8 @@ COPY apps/api/ ./apps/api/
 # Recreate workspace symlinks to ensure proper resolution
 RUN pnpm install --offline --frozen-lockfile
 
-# Build packages in dependency order using tsc --build (respects project references)
-RUN cd packages/domain && pnpm exec tsc --build
-RUN cd packages/application && pnpm exec tsc --build
-RUN cd packages/infrastructure && pnpm exec tsc --build
-
-# Build API
-RUN pnpm --filter @repo/api build
+# Build all packages using turbo (handles dependency order automatically)
+RUN pnpm exec turbo build --filter @repo/api...
 
 # Stage 3: Runner
 FROM base AS runner
