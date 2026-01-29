@@ -24,18 +24,8 @@ RUN pnpm install --frozen-lockfile
 FROM base AS builder
 WORKDIR /app
 
-# Copy workspace files first
-COPY pnpm-workspace.yaml package.json pnpm-lock.yaml turbo.json tsconfig.json ./
-
-# Copy all package.json files
-COPY apps/api/package.json ./apps/api/
-COPY packages/domain/package.json ./packages/domain/
-COPY packages/application/package.json ./packages/application/
-COPY packages/infrastructure/package.json ./packages/infrastructure/
-
-# Copy source code
-COPY packages/ ./packages/
-COPY apps/api/ ./apps/api/
+# Copy all source code at once to avoid file conflicts
+COPY . .
 
 # Install all dependencies (creates proper workspace symlinks)
 RUN pnpm install --frozen-lockfile
