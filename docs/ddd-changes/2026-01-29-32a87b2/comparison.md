@@ -1,16 +1,16 @@
 # DDD Changes - PR current
 
-**Generated:** 1/30/2026, 4:46:33 AM  
+**Generated:** 1/30/2026, 5:00:51 AM  
 **Base Branch:** main
 
 ## Summary
 
-- **Total Files Changed:** 158
-- **Lines Added:** +21188
-- **Lines Deleted:** -234
-- **Domain Changes:** 5
-- **Application Changes:** 3
-- **Infrastructure Changes:** 7
+- **Total Files Changed:** 18
+- **Lines Added:** +922
+- **Lines Deleted:** -26
+- **Domain Changes:** 4
+- **Application Changes:** 2
+- **Infrastructure Changes:** 6
 - **Test Changes:** 10
 
 ## DDD Component Changes
