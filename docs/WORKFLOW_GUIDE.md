@@ -173,16 +173,26 @@ git commit -m "feat: implement [feature-name]"
 ```
 
 **What happens automatically (pre-commit hook):**
-1. DDD snapshot generated
-2. Diagrams saved to `docs/ddd-snapshots/[date]-[sha]/`
-3. Snapshot auto-staged and included in commit
-4. Lint-staged runs (formatting, linting)
+1. **DDD Snapshot Generated**
+   - Diagrams saved to `docs/ddd-snapshots/[date]-[sha]/`
+   - Snapshot auto-staged and included in commit
+2. **DDD Diff Generated** ⭐ NEW
+   - Compares current changes against base branch
+   - Saved to `docs/ddd-changes/[date]-[sha]/`
+   - Includes before/after diagrams + comparison.md
+   - Diff auto-staged and included in commit
+3. **Lint-staged runs** (formatting, linting)
 
 **Naming convention:**
 - `docs/ddd-snapshots/2026-01-29-abc123f/`
   - `metadata.json` - Commit info, changed files
   - All 9 DDD diagrams (.svg + .mmd)
   - `stats.json` - Model statistics
+- `docs/ddd-changes/2026-01-29-abc123f/`
+  - `before/` - Previous state diagrams
+  - `after/` - Current state diagrams
+  - `comparison.md` - Side-by-side comparison
+  - `diff-summary.json` - Change statistics
 
 ---
 
@@ -201,17 +211,17 @@ pnpm workflow:prepare-pr --title "feat: user authentication" --base-branch main
 **What happens:**
 1. Runs all tests
 2. Analyzes code changes (git diff)
-3. Generates DDD diff diagrams:
-   - Before/after side-by-side comparison
-   - Saved to `docs/ddd-changes/PR-[number]/`
+3. **Locates DDD diff diagrams** (already generated in commit)
+   - Finds latest diff in `docs/ddd-changes/[date]-[sha]/`
+   - Uses pre-generated before/after comparison
 4. Identifies review focus areas
-5. Populates PR template
+5. Populates PR template with diff reference
 6. Creates PR via GitHub CLI
 
 **Output:**
 - PR created on GitHub
-- DDD diff diagrams in `docs/ddd-changes/PR-[number]/`
-- `comparison.md` with side-by-side diagrams
+- PR description references existing DDD diff diagrams
+- Reviewers can view `docs/ddd-changes/[date]-[sha]/comparison.md`
 
 ---
 
