@@ -24,24 +24,21 @@ RUN pnpm install --frozen-lockfile
 FROM base AS builder
 WORKDIR /app
 
-# Copy dependencies from deps stage
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules
-COPY --from=deps /app/packages/domain/node_modules ./packages/domain/node_modules
-COPY --from=deps /app/packages/application/node_modules ./packages/application/node_modules
-COPY --from=deps /app/packages/infrastructure/node_modules ./packages/infrastructure/node_modules
-
-# Copy workspace files (including lock file for offline install)
+# Copy workspace files first
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml turbo.json tsconfig.json ./
 
-# Copy packages
-COPY packages/ ./packages/
+# Copy all package.json files
+COPY apps/api/package.json ./apps/api/
+COPY packages/domain/package.json ./packages/domain/
+COPY packages/application/package.json ./packages/application/
+COPY packages/infrastructure/package.json ./packages/infrastructure/
 
-# Copy API source
+# Copy source code
+COPY packages/ ./packages/
 COPY apps/api/ ./apps/api/
 
-# Recreate workspace symlinks to ensure proper resolution
-RUN pnpm install --offline --frozen-lockfile
+# Install all dependencies (creates proper workspace symlinks)
+RUN pnpm install --frozen-lockfile
 
 # Build all packages using turbo (handles dependency order automatically)
 RUN pnpm exec turbo build --filter @repo/api...
