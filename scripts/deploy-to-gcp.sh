@@ -75,9 +75,14 @@ gcloud compute ssh $INSTANCE_NAME \
         echo '🛑 Stopping services...'
         sudo docker-compose down || true
         
-        # Rebuild and start services
+        # Clean Docker cache for fresh build
+        echo '🧹 Cleaning Docker build cache...'
+        sudo docker builder prune -f || true
+        
+        # Rebuild and start services (no cache to ensure latest code)
         echo '🔨 Building and starting services...'
-        sudo docker-compose up -d --build
+        sudo docker-compose build --no-cache
+        sudo docker-compose up -d
         
         # Wait for services to be ready
         echo '⏳ Waiting for services to start...'
