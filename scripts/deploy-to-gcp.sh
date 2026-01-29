@@ -62,6 +62,10 @@ gcloud compute ssh $INSTANCE_NAME \
         # Navigate to application directory
         cd /opt/oem-agent
         
+        # Fix Git ownership issue
+        echo '🔧 Configuring Git safe directory...'
+        git config --global --add safe.directory /opt/oem-agent
+        
         # Pull latest changes
         echo '📥 Pulling latest code from GitHub...'
         git fetch origin
