@@ -46,19 +46,22 @@ export class GitDiffAnalyzer {
   async analyzeDiff(from: string, to: string = 'HEAD'): Promise<GitDiffAnalysis> {
     const diffSummary = await this.git.diffSummary([from, to]);
     
-    const files: FileChange[] = diffSummary.files.map((file) => ({
+    const allFiles: FileChange[] = diffSummary.files.map((file) => ({
       file: file.file,
       changeType: this.getChangeType(file),
       insertions: file.insertions,
       deletions: file.deletions,
     }));
 
+    // Filter out non-functional files (docs, configs, diagrams)
+    const files = allFiles.filter((file) => this.isFunctionalFile(file.file));
+
     const dddComponents = this.mapFilesToDDDComponents(files);
 
     const summary = {
       totalFiles: files.length,
-      additions: diffSummary.insertions,
-      deletions: diffSummary.deletions,
+      additions: files.reduce((sum, f) => sum + f.insertions, 0),
+      deletions: files.reduce((sum, f) => sum + f.deletions, 0),
       domainChanges: dddComponents.filter((c) => c.layer === 'domain').length,
       applicationChanges: dddComponents.filter((c) => c.layer === 'application').length,
       infrastructureChanges: dddComponents.filter((c) => c.layer === 'infrastructure').length,
@@ -77,7 +80,10 @@ export class GitDiffAnalyzer {
    */
   async analyzeStagedChanges(): Promise<GitDiffAnalysis> {
     const diffSummary = await this.git.diff(['--cached', '--numstat']);
-    const files = this.parseDiffNumstat(diffSummary);
+    const allFiles = this.parseDiffNumstat(diffSummary);
+    
+    // Filter out non-functional files
+    const files = allFiles.filter((file) => this.isFunctionalFile(file.file));
     
     const dddComponents = this.mapFilesToDDDComponents(files);
 
@@ -118,6 +124,51 @@ export class GitDiffAnalyzer {
     if (file.insertions > 0 && file.deletions === 0) return 'added';
     if (file.insertions === 0 && file.deletions > 0) return 'deleted';
     return 'modified';
+  }
+
+  /**
+   * Check if a file is functional code (not docs, configs, diagrams, or workflow scripts)
+   * Only counts core business logic in packages/ and apps/ directories
+   */
+  private isFunctionalFile(filePath: string): boolean {
+    // Only include files in packages/ and apps/ directories (core business logic)
+    if (!filePath.startsWith('packages/') && !filePath.startsWith('apps/')) {
+      return false;
+    }
+
+    // Exclude documentation and diagram files
+    const nonFunctionalPatterns = [
+      /\.md$/i,                    // Markdown files
+      /\.svg$/i,                   // SVG diagrams
+      /\.mmd$/i,                   // Mermaid diagrams
+      /\.json$/,                   // JSON files (configs, though package.json is borderline)
+      /\.ya?ml$/,                  // YAML files (configs)
+      /\.toml$/,                   // TOML files (configs)
+      /\.lock$/,                   // Lock files
+      /\.tsbuildinfo$/,            // TypeScript build info
+      /CHANGELOG/i,                // Changelog
+      /README/i,                   // README files
+      /LICENSE/i,                  // License files
+    ];
+
+    // Check if file matches any non-functional pattern
+    for (const pattern of nonFunctionalPatterns) {
+      if (pattern.test(filePath)) {
+        return false;
+      }
+    }
+
+    // Only include actual code files
+    const functionalExtensions = [
+      '.ts', '.tsx', '.js', '.jsx',  // TypeScript/JavaScript
+      '.py',                          // Python
+      '.go',                          // Go
+      '.rs',                          // Rust
+      '.java',                        // Java
+      '.c', '.cpp', '.h', '.hpp',    // C/C++
+    ];
+
+    return functionalExtensions.some((ext) => filePath.endsWith(ext));
   }
 
   private mapFilesToDDDComponents(files: FileChange[]): DDDComponentChange[] {
