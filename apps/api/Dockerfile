@@ -40,12 +40,7 @@ COPY packages/ ./packages/
 # Copy API source
 COPY apps/api/ ./apps/api/
 
-# Build packages - FAIL FAST on errors!
-RUN pnpm --filter @repo/domain build
-RUN pnpm --filter @repo/application build
-RUN pnpm --filter @repo/infrastructure build
-
-# Build API - FAIL FAST on errors!
+# Build API and its dependencies using turbo (handles dependency order)
 RUN pnpm --filter @repo/api build
 
 # Stage 3: Runner
