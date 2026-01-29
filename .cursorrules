@@ -203,6 +203,68 @@ RUN pnpm build
 - Use `--no-cache` flag when debugging compilation issues
 - Remove error suppression from Dockerfiles (`|| echo`, `|| true`, etc.)
 
+### TypeScript Build Cache (.tsbuildinfo) ⚠️ CRITICAL
+
+**NEVER commit `.tsbuildinfo` files to Git.**
+
+**Problem**: `.tsbuildinfo` files contain TypeScript incremental compilation cache. When committed to Git, these stale cache files can cause:
+- TypeScript compiler to skip recompiling files
+- Old import paths (e.g., with `.js` extensions) to persist
+- "Cannot find module" errors in Docker builds even after source code is fixed
+- Different behavior between local and Docker builds
+
+**Symptoms**:
+- Local build succeeds, Docker build fails with module resolution errors
+- TypeScript generates `.d.ts.map` but not `.d.ts` files
+- Changes to import statements not reflected in compilation
+- Build "succeeds" but produces no output files
+
+**Root Cause Example**:
+```typescript
+// Old code (committed in .tsbuildinfo cache):
+export * from './entities/index.js';  // ❌ TypeScript can't find this
+
+// New code (in source):
+export * from './entities/index';     // ✅ Correct
+```
+If `.tsbuildinfo` is committed with old state, TypeScript uses cached info and skips the file.
+
+**Solution**:
+```bash
+# 1. Add to .gitignore
+echo "*.tsbuildinfo" >> .gitignore
+
+# 2. Remove from Git tracking
+git rm --cached **/*.tsbuildinfo
+git commit -m "fix: remove TypeScript build cache from git"
+
+# 3. Clean in Dockerfile BEFORE build
+RUN find . -name "*.tsbuildinfo" -delete && pnpm build
+```
+
+**Required .gitignore entries**:
+```gitignore
+# TypeScript
+*.tsbuildinfo
+
+# Build outputs
+dist/
+build/
+.next/
+```
+
+**Debugging checklist**:
+1. Check if `.tsbuildinfo` exists: `find . -name "*.tsbuildinfo" | grep -v node_modules`
+2. Verify it's in `.gitignore`: `git check-ignore *.tsbuildinfo`
+3. Confirm not tracked: `git ls-files | grep tsbuildinfo` (should be empty)
+4. Clean locally: `find . -name "*.tsbuildinfo" -delete`
+5. Clean in Docker: Add delete step before build in Dockerfile
+
+**For composite projects (project references)**:
+- Use `tsc --build` instead of `tsc`
+- Ensure all package.json have `"build": "tsc --build"`
+- Composite projects REQUIRE `.tsbuildinfo` for incremental builds, but these must be generated per build, never committed
+
 ## Test-Driven Development (TDD) for AI Coding
 
 - Write tests BEFORE implementation (red-green-refactor)
