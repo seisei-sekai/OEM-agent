@@ -30,9 +30,9 @@ echo "   Zone: $ZONE"
 echo ""
 
 # Step 1: Commit and push current changes (optional)
-read -p "$(echo -e ${YELLOW}Do you want to push current changes to GitHub? [y/N]:${NC} )" -n 1 -r
+read -p "$(echo -e ${YELLOW}Do you want to push current changes to GitHub? [y/N]:${NC} )" -n 1 -r PUSH_REPLY
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
+if [[ $PUSH_REPLY =~ ^[Yy]$ ]]; then
     echo -e "${GREEN}📤 Pushing changes to GitHub...${NC}"
     
     # Check if there are uncommitted changes
@@ -44,6 +44,17 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     
     git push origin $(git rev-parse --abbrev-ref HEAD)
     echo -e "${GREEN}✅ Pushed to GitHub${NC}\n"
+fi
+
+# Ask about Docker cache rebuild (BEFORE SSH for better interactivity)
+echo ""
+read -p "$(echo -e ${YELLOW}Do you want to clean Docker cache and force rebuild? [y/N]:${NC} )" -n 1 -r REBUILD_REPLY
+echo ""
+
+# Convert to environment variable for SSH
+REBUILD_FLAG=""
+if [[ $REBUILD_REPLY =~ ^[Yy]$ ]]; then
+    REBUILD_FLAG="--no-cache"
 fi
 
 # Step 2: SSH to GCP instance and deploy
@@ -75,20 +86,14 @@ gcloud compute ssh $INSTANCE_NAME \
         echo '🛑 Stopping services...'
         sudo docker-compose down || true
         
-        # Ask if user wants to clean cache and rebuild
-        read -p \$'\\033[1;33mDo you want to clean Docker cache and force rebuild? [y/N]:\\033[0m ' -n 1 -r REBUILD_CHOICE
-        echo
-        
-        if [[ \$REBUILD_CHOICE =~ ^[Yy]$ ]]; then
-            # Clean Docker cache for fresh build
+        # Clean cache and rebuild based on user choice
+        if [[ -n \"$REBUILD_FLAG\" ]]; then
             echo '🧹 Cleaning Docker build cache...'
             sudo docker builder prune -f || true
             
-            # Rebuild without cache (ensures latest config)
             echo '🔨 Rebuilding from scratch (no cache)...'
             sudo docker-compose build --no-cache
         else
-            # Use cache for faster build
             echo '🔨 Building with cache (faster)...'
             sudo docker-compose build
         fi
