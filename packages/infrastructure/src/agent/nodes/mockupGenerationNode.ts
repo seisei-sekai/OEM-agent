@@ -1,5 +1,6 @@
 import { AIMessage } from '@langchain/core/messages';
 import { RunnableConfig } from '@langchain/core/runnables';
+import { MockupResult } from '@repo/application';
 import { AgentState, AgentDependencies, StateTransition } from '../types.js';
 import { withTimeout } from '../utils/timeout.js';
 
@@ -57,7 +58,7 @@ export async function mockupGenerationNode(
       content: `Creating a product image with your ${brandingInfo.companyName || 'brand'} logo on ${product.name}... ✨`,
     });
 
-    const result = await withTimeout(
+    const result: MockupResult = await withTimeout(
       dependencies.generateMockupUseCase.execute({
         productId: product.id || product.name,
         logo: logoUrl,
