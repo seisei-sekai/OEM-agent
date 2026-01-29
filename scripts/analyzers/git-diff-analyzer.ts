@@ -128,7 +128,7 @@ export class GitDiffAnalyzer {
 
   /**
    * Check if a file is functional code (not docs, configs, diagrams, or workflow scripts)
-   * Only counts core business logic in packages/ and apps/ directories
+   * Uses blacklist approach to automatically support any programming language
    */
   private isFunctionalFile(filePath: string): boolean {
     // Only include files in packages/ and apps/ directories (core business logic)
@@ -136,39 +136,60 @@ export class GitDiffAnalyzer {
       return false;
     }
 
-    // Exclude documentation and diagram files
-    const nonFunctionalPatterns = [
-      /\.md$/i,                    // Markdown files
-      /\.svg$/i,                   // SVG diagrams
-      /\.mmd$/i,                   // Mermaid diagrams
-      /\.json$/,                   // JSON files (configs, though package.json is borderline)
-      /\.ya?ml$/,                  // YAML files (configs)
-      /\.toml$/,                   // TOML files (configs)
-      /\.lock$/,                   // Lock files
-      /\.tsbuildinfo$/,            // TypeScript build info
-      /CHANGELOG/i,                // Changelog
-      /README/i,                   // README files
-      /LICENSE/i,                  // License files
+    // Blacklist: Exclude non-functional file types
+    const nonFunctionalExtensions = [
+      // Documentation
+      '.md', '.txt', '.pdf', '.doc', '.docx',
+      
+      // Diagrams & Images
+      '.svg', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.ico',
+      '.mmd', '.puml', '.drawio',
+      
+      // Config & Data (static files)
+      '.json', '.yaml', '.yml', '.toml', '.xml', '.ini', '.env',
+      '.lock', '.tsbuildinfo',
+      
+      // Build artifacts (should be in .gitignore but double-check)
+      '.map', '.min.js', '.min.css',
     ];
 
-    // Check if file matches any non-functional pattern
+    // Check file extension
+    const ext = filePath.substring(filePath.lastIndexOf('.')).toLowerCase();
+    if (nonFunctionalExtensions.includes(ext)) {
+      return false;
+    }
+
+    // Exclude specific file name patterns
+    const nonFunctionalPatterns = [
+      /CHANGELOG/i,
+      /README/i,
+      /LICENSE/i,
+    ];
+
     for (const pattern of nonFunctionalPatterns) {
       if (pattern.test(filePath)) {
         return false;
       }
     }
 
-    // Only include actual code files
-    const functionalExtensions = [
-      '.ts', '.tsx', '.js', '.jsx',  // TypeScript/JavaScript
-      '.py',                          // Python
-      '.go',                          // Go
-      '.rs',                          // Rust
-      '.java',                        // Java
-      '.c', '.cpp', '.h', '.hpp',    // C/C++
-    ];
-
-    return functionalExtensions.some((ext) => filePath.endsWith(ext));
+    // Everything else in packages/ and apps/ is considered functional code
+    // This automatically includes:
+    // - TypeScript/JavaScript: .ts, .tsx, .js, .jsx
+    // - Python: .py, .pyx, .pyi
+    // - Go: .go
+    // - Rust: .rs
+    // - Java/Kotlin: .java, .kt, .kts
+    // - C/C++: .c, .cpp, .h, .hpp, .cc, .cxx
+    // - C#: .cs
+    // - Ruby: .rb
+    // - PHP: .php
+    // - Swift: .swift
+    // - Shell: .sh, .bash, .zsh
+    // - SQL: .sql
+    // - CSS/SCSS/LESS: .css, .scss, .sass, .less (style code)
+    // - HTML templates: .html, .htm, .ejs, .hbs, .pug
+    // - Any future languages added to the project
+    return true;
   }
 
   private mapFilesToDDDComponents(files: FileChange[]): DDDComponentChange[] {
