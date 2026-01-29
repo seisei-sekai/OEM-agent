@@ -62,22 +62,22 @@ gcloud compute ssh $INSTANCE_NAME \
         # Navigate to application directory
         cd /opt/oem-agent
         
-        # Fix Git ownership issue
+        # Fix Git ownership issue (run as sudo since directory is owned by root)
         echo '🔧 Configuring Git safe directory...'
-        git config --global --add safe.directory /opt/oem-agent
+        sudo git config --global --add safe.directory /opt/oem-agent
         
         # Pull latest changes
         echo '📥 Pulling latest code from GitHub...'
-        git fetch origin
-        git pull origin \$(git rev-parse --abbrev-ref HEAD)
+        sudo git fetch origin
+        sudo git pull origin \$(git rev-parse --abbrev-ref HEAD)
         
         # Stop running services
         echo '🛑 Stopping services...'
-        docker-compose down || true
+        sudo docker-compose down || true
         
         # Rebuild and start services
         echo '🔨 Building and starting services...'
-        docker-compose up -d --build
+        sudo docker-compose up -d --build
         
         # Wait for services to be ready
         echo '⏳ Waiting for services to start...'
@@ -85,7 +85,7 @@ gcloud compute ssh $INSTANCE_NAME \
         
         # Show service status
         echo '📊 Service Status:'
-        docker-compose ps
+        sudo docker-compose ps
         
         # Get external IP
         EXTERNAL_IP=\$(curl -s http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip -H 'Metadata-Flavor: Google')
