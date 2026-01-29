@@ -31,8 +31,8 @@ COPY --from=deps /app/packages/domain/node_modules ./packages/domain/node_module
 COPY --from=deps /app/packages/application/node_modules ./packages/application/node_modules
 COPY --from=deps /app/packages/infrastructure/node_modules ./packages/infrastructure/node_modules
 
-# Copy workspace files
-COPY pnpm-workspace.yaml package.json turbo.json tsconfig.json ./
+# Copy workspace files (including lock file for offline install)
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml turbo.json tsconfig.json ./
 
 # Copy packages
 COPY packages/ ./packages/
