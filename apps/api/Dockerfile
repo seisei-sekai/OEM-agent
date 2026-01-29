@@ -40,6 +40,14 @@ COPY apps/api/ ./apps/api/
 # Install all dependencies (creates proper workspace symlinks)
 RUN pnpm install --frozen-lockfile
 
+# Debug: Check workspace symlinks
+RUN echo "=== Checking node_modules/@repo/domain ===" && \
+    ls -la node_modules/@repo/ && \
+    echo "=== Checking if domain dist exists ===" && \
+    ls -la packages/domain/dist/ || echo "Domain dist not found!" && \
+    echo "=== Checking domain package.json ===" && \
+    cat packages/domain/package.json | grep -A 3 '"main"'
+
 # Build all packages using turbo (handles dependency order automatically)
 RUN pnpm exec turbo build --filter @repo/api...
 
