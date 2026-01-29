@@ -34,11 +34,7 @@ RUN pnpm install --frozen-lockfile
 RUN find . -name "*.tsbuildinfo" -delete
 
 # Build all packages using turbo (handles dependency order automatically)
-RUN pnpm exec turbo build --filter @repo/api... && \
-    echo "=== Verify domain dist ===" && \
-    ls -la packages/domain/dist/index.* && \
-    echo "=== Verify application can see domain ===" && \
-    ls -la packages/application/node_modules/@repo/domain/dist/ 2>/dev/null || echo "Symlink broken!"
+RUN pnpm exec turbo build --filter @repo/api...
 
 # Stage 3: Runner
 FROM base AS runner
