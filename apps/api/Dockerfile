@@ -30,15 +30,7 @@ COPY . .
 # Install all dependencies (creates proper workspace symlinks)
 RUN pnpm install --frozen-lockfile
 
-# Build domain first and CHECK if dist is created
-RUN echo "=== Building domain ===" && \
-    pnpm --filter @repo/domain build && \
-    echo "=== Checking domain dist ===" && \
-    ls -la packages/domain/dist/ && \
-    echo "=== Checking if index.d.ts exists ===" && \
-    cat packages/domain/dist/index.d.ts | head -10
-
-# Build remaining packages
+# Build all packages using turbo (handles dependency order automatically)
 RUN pnpm exec turbo build --filter @repo/api...
 
 # Stage 3: Runner
