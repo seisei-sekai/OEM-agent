@@ -1,6 +1,6 @@
 export function generateBoundedContextMap(): string {
   return `graph TB
-    subgraph BC1["OEM Agent Context - 核心有界上下文"]
+    subgraph BC1["OEM Agent Context - Core Bounded Context"]
         direction TB
         subgraph ConvMgmt["Conversation Management Subdomain"]
             ChatSession["ChatSession Aggregate"]
@@ -23,7 +23,7 @@ export function generateBoundedContextMap(): string {
         end
     end
     
-    subgraph External["External Systems - 外部系统"]
+    subgraph External["External Systems"]
         OpenAI["OpenAI API<br/>Vision & LLM"]
         Weaviate["Weaviate<br/>Vector Search"]
         MongoDB["MongoDB<br/>Persistence"]

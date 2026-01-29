@@ -1,17 +1,17 @@
 graph TB
-    subgraph DomainLayer["Domain Layer - 领域层"]
+    subgraph DomainLayer["Domain Layer"]
         Entities["4 Entities<br/>BrandingInfo, ChatSession, Message, Product"]
         ValueObjects["5 Value Objects<br/>ColorCode, LogoImage, Price, SessionId, Timestamp"]
         Events["5 Domain Events<br/>BrandingExtracted, BaseDomainEvent, MessageSent, ProductsRecommended, SessionStarted"]
         Services["1 Domain Services<br/>CostCalculator"]
     end
     
-    subgraph ApplicationLayer["Application Layer - 应用层"]
+    subgraph ApplicationLayer["Application Layer"]
         UseCases["6 Use Cases<br/>ExtractBrandingUseCase, GenerateMockupUseCase, LoadChatHistoryUseCase, RecommendProductsUseCase, SendMessageUseCase, StartChatSessionUseCase"]
         DTOs["7 DTOs"]
     end
     
-    subgraph InfrastructureLayer["Infrastructure Layer - 基础设施层"]
+    subgraph InfrastructureLayer["Infrastructure Layer"]
         Repositories["Repository Implementations"]
         ExternalServices["External Services<br/>OpenAI, Weaviate, MongoDB"]
     end

@@ -22,7 +22,7 @@ export function generateUseCaseCatalog(applicationData: ApplicationData): string
   }
 
   return `mindmap
-  root((Use Cases<br/>用例目录))
+  root((Use Cases<br/>Catalog))
     ${Object.entries(grouped)
       .map(
         ([category, useCases]) => `
