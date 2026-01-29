@@ -1,0 +1,104 @@
+# DDD Changes - PR current
+
+**Generated:** 1/30/2026, 4:42:48 AM  
+**Base Branch:** main
+
+## Summary
+
+- **Total Files Changed:** 109
+- **Lines Added:** +19373
+- **Lines Deleted:** -234
+- **Domain Changes:** 5
+- **Application Changes:** 3
+- **Infrastructure Changes:** 7
+- **Test Changes:** 10
+
+## DDD Component Changes
+
+### Domain Layer
+
+#### Entities
+
+**Added:**
+
+- ✅ `Message` (packages/domain/src/entities/Message.ts)
+
+#### Value Objects
+
+**Added:**
+
+- ✅ `Timestamp` (packages/domain/src/value-objects/Timestamp.ts)
+
+#### Domain Services
+
+No changes.
+
+### Application Layer
+
+#### Use Cases
+
+No changes.
+
+#### DTOs
+
+No changes.
+
+### Infrastructure Layer
+
+#### Repositories
+
+No changes.
+
+#### Infrastructure Services
+
+No changes.
+
+### Tests
+
+#### Test Files
+
+**Added:**
+
+- ✅ `LoadChatHistoryUseCase.test` (packages/application/src/use-cases/**tests**/LoadChatHistoryUseCase.test.ts)
+- ✅ `Message.test` (packages/domain/src/entities/**tests**/Message.test.ts)
+- ✅ `Timestamp.test` (packages/domain/src/value-objects/**tests**/Timestamp.test.ts)
+- ✅ `graph.integration.test` (packages/infrastructure/src/agent/**tests**/graph.integration.test.ts)
+- ✅ `integration.generateMockup.test` (packages/infrastructure/src/agent/**tests**/integration.generateMockup.test.ts)
+- ✅ `sse.mockup.test` (packages/infrastructure/src/agent/**tests**/sse.mockup.test.ts)
+
+**Modified:**
+
+- 🔄 `health.test` (apps/api/src/routes/**tests**/health.test.ts)
+- 🔄 `SendMessageUseCase.test` (packages/application/src/use-cases/**tests**/SendMessageUseCase.test.ts)
+- 🔄 `intentClassificationNode.test` (packages/infrastructure/src/agent/nodes/**tests**/intentClassificationNode.test.ts)
+- 🔄 `MockupGeneratorService.test` (packages/infrastructure/src/ai/**tests**/MockupGeneratorService.test.ts)
+
+## Visual Comparison
+
+### Stakeholder Summary
+
+| Before                                      | After                                     |
+| ------------------------------------------- | ----------------------------------------- |
+| ![Before](./before/stakeholder-summary.svg) | ![After](./after/stakeholder-summary.svg) |
+
+### Domain Model
+
+| Before                               | After                              |
+| ------------------------------------ | ---------------------------------- |
+| ![Before](./before/domain-model.svg) | ![After](./after/domain-model.svg) |
+
+### Use Case Catalog
+
+| Before                                   | After                                  |
+| ---------------------------------------- | -------------------------------------- |
+| ![Before](./before/use-case-catalog.svg) | ![After](./after/use-case-catalog.svg) |
+
+### Bounded Context Map
+
+| Before                                      | After                                     |
+| ------------------------------------------- | ----------------------------------------- |
+| ![Before](./before/bounded-context-map.svg) | ![After](./after/bounded-context-map.svg) |
+
+---
+
+**Note:** Red indicates deletions, Green indicates additions, Yellow indicates modifications.

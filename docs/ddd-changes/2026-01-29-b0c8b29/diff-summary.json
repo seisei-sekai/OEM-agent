@@ -1,0 +1,896 @@
+{
+  "prNumber": "current",
+  "baseBranch": "main",
+  "timestamp": "2026-01-29T19:42:48.175Z",
+  "changes": {
+    "files": [
+      {
+        "file": ".cursorrules",
+        "changeType": "added",
+        "insertions": 104,
+        "deletions": 0
+      },
+      {
+        "file": ".dependency-cruiser.cjs",
+        "changeType": "added",
+        "insertions": 279,
+        "deletions": 0
+      },
+      {
+        "file": ".github/PULL_REQUEST_TEMPLATE.md",
+        "changeType": "added",
+        "insertions": 199,
+        "deletions": 0
+      },
+      {
+        "file": ".github/pr-body.md",
+        "changeType": "added",
+        "insertions": 190,
+        "deletions": 0
+      },
+      {
+        "file": ".github/workflows/ddd-docs.yml",
+        "changeType": "added",
+        "insertions": 56,
+        "deletions": 0
+      },
+      {
+        "file": ".github/workflows/pr-validation.yml",
+        "changeType": "added",
+        "insertions": 136,
+        "deletions": 0
+      },
+      {
+        "file": ".husky/pre-commit",
+        "changeType": "added",
+        "insertions": 13,
+        "deletions": 0
+      },
+      {
+        "file": ".lintstagedrc.json",
+        "changeType": "added",
+        "insertions": 9,
+        "deletions": 0
+      },
+      {
+        "file": "Business/Features/message-timestamps/BEFORE_AFTER.md",
+        "changeType": "added",
+        "insertions": 289,
+        "deletions": 0
+      },
+      {
+        "file": "Business/Features/message-timestamps/IMPLEMENTATION.md",
+        "changeType": "added",
+        "insertions": 299,
+        "deletions": 0
+      },
+      {
+        "file": "Business/Features/message-timestamps/INTEGRATION_COMPLETE.md",
+        "changeType": "added",
+        "insertions": 499,
+        "deletions": 0
+      },
+      {
+        "file": "Business/Features/message-timestamps/class-diagram.md",
+        "changeType": "added",
+        "insertions": 16,
+        "deletions": 0
+      },
+      {
+        "file": "Business/Features/message-timestamps/design.md",
+        "changeType": "added",
+        "insertions": 283,
+        "deletions": 0
+      },
+      {
+        "file": "Business/Features/message-timestamps/requirement.md",
+        "changeType": "added",
+        "insertions": 179,
+        "deletions": 0
+      },
+      {
+        "file": "Business/Features/message-timestamps/test-plan.md",
+        "changeType": "added",
+        "insertions": 80,
+        "deletions": 0
+      },
+      {
+        "file": "apps/api/src/routes/__tests__/health.test.ts",
+        "changeType": "modified",
+        "insertions": 1,
+        "deletions": 1
+      },
+      {
+        "file": "apps/api/tsconfig.tsbuildinfo",
+        "changeType": "deleted",
+        "insertions": 0,
+        "deletions": 1
+      },
+      {
+        "file": "apps/web/app/test-timestamps/page.tsx",
+        "changeType": "added",
+        "insertions": 131,
+        "deletions": 0
+      },
+      {
+        "file": "apps/web/components/chat/MessageBubble.tsx",
+        "changeType": "added",
+        "insertions": 63,
+        "deletions": 0
+      },
+      {
+        "file": "apps/web/components/floating-agent/ChatInput.tsx",
+        "changeType": "modified",
+        "insertions": 23,
+        "deletions": 3
+      },
+      {
+        "file": "apps/web/components/floating-agent/MessageList.tsx",
+        "changeType": "modified",
+        "insertions": 92,
+        "deletions": 12
+      },
+      {
+        "file": "apps/web/lib/store.ts",
+        "changeType": "modified",
+        "insertions": 81,
+        "deletions": 6
+      },
+      {
+        "file": "apps/web/tsconfig.tsbuildinfo",
+        "changeType": "deleted",
+        "insertions": 0,
+        "deletions": 1
+      },
+      {
+        "file": "docs/DDD_IMPLEMENTATION_SUMMARY.md",
+        "changeType": "added",
+        "insertions": 228,
+        "deletions": 0
+      },
+      {
+        "file": "docs/DDD_MERMAID_GUIDE.md",
+        "changeType": "added",
+        "insertions": 383,
+        "deletions": 0
+      },
+      {
+        "file": "docs/DDD_MODELS_IMPLEMENTATION.md",
+        "changeType": "added",
+        "insertions": 514,
+        "deletions": 0
+      },
+      {
+        "file": "docs/DDD_QUICK_START.md",
+        "changeType": "added",
+        "insertions": 175,
+        "deletions": 0
+      },
+      {
+        "file": "docs/DDD_VISUALIZATION.md",
+        "changeType": "added",
+        "insertions": 211,
+        "deletions": 0
+      },
+      {
+        "file": "docs/INDEX.md",
+        "changeType": "modified",
+        "insertions": 55,
+        "deletions": 1
+      },
+      {
+        "file": "docs/QUICK_START_TDD_WORKFLOW.md",
+        "changeType": "added",
+        "insertions": 267,
+        "deletions": 0
+      },
+      {
+        "file": "docs/TDD_WORKFLOW_IMPLEMENTATION.md",
+        "changeType": "added",
+        "insertions": 697,
+        "deletions": 0
+      },
+      {
+        "file": "docs/WORKFLOW_GUIDE.md",
+        "changeType": "added",
+        "insertions": 860,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-diagrams/QUICK_REFERENCE.md",
+        "changeType": "added",
+        "insertions": 88,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-diagrams/README.md",
+        "changeType": "added",
+        "insertions": 121,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-diagrams/architecture.svg",
+        "changeType": "added",
+        "insertions": 74,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-diagrams/dependencies.md",
+        "changeType": "added",
+        "insertions": 65,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-diagrams/dependencies.mmd",
+        "changeType": "added",
+        "insertions": 315,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-diagrams/dependencies.svg",
+        "changeType": "added",
+        "insertions": 1950,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-diagrams/report.html",
+        "changeType": "added",
+        "insertions": 702,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-diagrams/strategic-design.md",
+        "changeType": "added",
+        "insertions": 377,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/0-summary/overview.mmd",
+        "changeType": "added",
+        "insertions": 26,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/0-summary/overview.svg",
+        "changeType": "added",
+        "insertions": 1,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/0-summary/stakeholder-summary.mmd",
+        "changeType": "added",
+        "insertions": 42,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/0-summary/stakeholder-summary.svg",
+        "changeType": "added",
+        "insertions": 1,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/1-strategic-design/bounded-context-map.mmd",
+        "changeType": "added",
+        "insertions": 45,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/1-strategic-design/bounded-context-map.svg",
+        "changeType": "added",
+        "insertions": 1,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/1-strategic-design/ubiquitous-language.mmd",
+        "changeType": "added",
+        "insertions": 41,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/1-strategic-design/ubiquitous-language.svg",
+        "changeType": "added",
+        "insertions": 1,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/2-tactical-design/aggregate-design.mmd",
+        "changeType": "added",
+        "insertions": 66,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/2-tactical-design/aggregate-design.svg",
+        "changeType": "added",
+        "insertions": 1,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/2-tactical-design/domain-model.mmd",
+        "changeType": "added",
+        "insertions": 80,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/2-tactical-design/domain-model.svg",
+        "changeType": "added",
+        "insertions": 1,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/3-application-layer/use-case-catalog.mmd",
+        "changeType": "added",
+        "insertions": 23,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/3-application-layer/use-case-catalog.svg",
+        "changeType": "added",
+        "insertions": 1,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/4-scrum-lifecycle/event-storming.mmd",
+        "changeType": "added",
+        "insertions": 32,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/4-scrum-lifecycle/event-storming.svg",
+        "changeType": "added",
+        "insertions": 1,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/4-scrum-lifecycle/product-backlog.mmd",
+        "changeType": "added",
+        "insertions": 22,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/4-scrum-lifecycle/product-backlog.svg",
+        "changeType": "added",
+        "insertions": 1,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/QUICK_START.md",
+        "changeType": "added",
+        "insertions": 185,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/README.md",
+        "changeType": "added",
+        "insertions": 296,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/STAKEHOLDER_GUIDE.md",
+        "changeType": "added",
+        "insertions": 339,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/USAGE_CARD.md",
+        "changeType": "added",
+        "insertions": 65,
+        "deletions": 0
+      },
+      {
+        "file": "docs/ddd-models/stats.json",
+        "changeType": "added",
+        "insertions": 19,
+        "deletions": 0
+      },
+      {
+        "file": "package.json",
+        "changeType": "modified",
+        "insertions": 30,
+        "deletions": 4
+      },
+      {
+        "file": "packages/application/src/use-cases/__tests__/LoadChatHistoryUseCase.test.ts",
+        "changeType": "added",
+        "insertions": 120,
+        "deletions": 0
+      },
+      {
+        "file": "packages/application/src/use-cases/__tests__/SendMessageUseCase.test.ts",
+        "changeType": "modified",
+        "insertions": 1,
+        "deletions": 1
+      },
+      {
+        "file": "packages/application/tsconfig.tsbuildinfo",
+        "changeType": "modified",
+        "insertions": 1,
+        "deletions": 1
+      },
+      {
+        "file": "packages/domain/src/entities/Message.ts",
+        "changeType": "added",
+        "insertions": 21,
+        "deletions": 0
+      },
+      {
+        "file": "packages/domain/src/entities/__tests__/Message.test.ts",
+        "changeType": "added",
+        "insertions": 79,
+        "deletions": 0
+      },
+      {
+        "file": "packages/domain/src/value-objects/Timestamp.ts",
+        "changeType": "added",
+        "insertions": 153,
+        "deletions": 0
+      },
+      {
+        "file": "packages/domain/src/value-objects/__tests__/Timestamp.test.ts",
+        "changeType": "added",
+        "insertions": 131,
+        "deletions": 0
+      },
+      {
+        "file": "packages/domain/tsconfig.tsbuildinfo",
+        "changeType": "modified",
+        "insertions": 1,
+        "deletions": 1
+      },
+      {
+        "file": "packages/infrastructure/src/agent/__tests__/graph.integration.test.ts",
+        "changeType": "added",
+        "insertions": 3,
+        "deletions": 0
+      },
+      {
+        "file": "packages/infrastructure/src/agent/__tests__/integration.generateMockup.test.ts",
+        "changeType": "added",
+        "insertions": 7,
+        "deletions": 0
+      },
+      {
+        "file": "packages/infrastructure/src/agent/__tests__/sse.mockup.test.ts",
+        "changeType": "added",
+        "insertions": 5,
+        "deletions": 0
+      },
+      {
+        "file": "packages/infrastructure/src/agent/nodes/__tests__/intentClassificationNode.test.ts",
+        "changeType": "modified",
+        "insertions": 1,
+        "deletions": 1
+      },
+      {
+        "file": "packages/infrastructure/src/ai/__tests__/MockupGeneratorService.test.ts",
+        "changeType": "modified",
+        "insertions": 3,
+        "deletions": 2
+      },
+      {
+        "file": "packages/infrastructure/tsconfig.tsbuildinfo",
+        "changeType": "modified",
+        "insertions": 1,
+        "deletions": 1
+      },
+      {
+        "file": "packages/infrastructure/vitest.config.ts",
+        "changeType": "added",
+        "insertions": 7,
+        "deletions": 0
+      },
+      {
+        "file": "pnpm-lock.yaml",
+        "changeType": "modified",
+        "insertions": 2838,
+        "deletions": 193
+      },
+      {
+        "file": "pnpm-workspace.yaml",
+        "changeType": "modified",
+        "insertions": 2,
+        "deletions": 5
+      },
+      {
+        "file": "scripts/README.md",
+        "changeType": "added",
+        "insertions": 133,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/analyzers/application-analyzer.ts",
+        "changeType": "added",
+        "insertions": 190,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/analyzers/domain-analyzer.ts",
+        "changeType": "added",
+        "insertions": 288,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/analyzers/git-diff-analyzer.ts",
+        "changeType": "added",
+        "insertions": 207,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/analyzers/prd-analyzer.ts",
+        "changeType": "added",
+        "insertions": 299,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/convert-to-svg.ts",
+        "changeType": "added",
+        "insertions": 98,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/generate-ddd-docs.ts",
+        "changeType": "added",
+        "insertions": 134,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/generators/aggregate-design-generator.ts",
+        "changeType": "added",
+        "insertions": 45,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/generators/bounded-context-generator.ts",
+        "changeType": "added",
+        "insertions": 48,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/generators/domain-model-generator.ts",
+        "changeType": "added",
+        "insertions": 41,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/generators/event-storming-generator.ts",
+        "changeType": "added",
+        "insertions": 35,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/generators/generate-ddd-diff.ts",
+        "changeType": "added",
+        "insertions": 292,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/generators/index.ts",
+        "changeType": "added",
+        "insertions": 10,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/generators/overview-generator.ts",
+        "changeType": "added",
+        "insertions": 34,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/generators/product-backlog-generator.ts",
+        "changeType": "added",
+        "insertions": 56,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/generators/stakeholder-summary-generator.ts",
+        "changeType": "added",
+        "insertions": 53,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/generators/ubiquitous-language-generator.ts",
+        "changeType": "added",
+        "insertions": 50,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/generators/use-case-catalog-generator.ts",
+        "changeType": "added",
+        "insertions": 41,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/git-hooks/pre-commit-ddd-snapshot.ts",
+        "changeType": "added",
+        "insertions": 147,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/hooks/pre-commit-ddd-diff.ts",
+        "changeType": "added",
+        "insertions": 82,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/types.ts",
+        "changeType": "added",
+        "insertions": 110,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/validate-ports.sh",
+        "changeType": "added",
+        "insertions": 197,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/workflows/generate-code-stubs.ts",
+        "changeType": "added",
+        "insertions": 277,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/workflows/generate-design.ts",
+        "changeType": "added",
+        "insertions": 421,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/workflows/generate-tests.ts",
+        "changeType": "added",
+        "insertions": 479,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/workflows/prepare-pr.ts",
+        "changeType": "added",
+        "insertions": 358,
+        "deletions": 0
+      },
+      {
+        "file": "scripts/workflows/run-tdd-workflow.ts",
+        "changeType": "added",
+        "insertions": 308,
+        "deletions": 0
+      },
+      {
+        "file": "templates/scrum/requirement-template.md",
+        "changeType": "added",
+        "insertions": 142,
+        "deletions": 0
+      }
+    ],
+    "dddComponents": [
+      {
+        "layer": "api",
+        "componentType": "test",
+        "componentName": "health.test",
+        "file": "apps/api/src/routes/__tests__/health.test.ts",
+        "changeType": "modified"
+      },
+      {
+        "layer": "api",
+        "componentType": "other",
+        "componentName": "",
+        "file": "apps/api/tsconfig.tsbuildinfo",
+        "changeType": "deleted"
+      },
+      {
+        "layer": "application",
+        "componentType": "test",
+        "componentName": "LoadChatHistoryUseCase.test",
+        "file": "packages/application/src/use-cases/__tests__/LoadChatHistoryUseCase.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "application",
+        "componentType": "test",
+        "componentName": "SendMessageUseCase.test",
+        "file": "packages/application/src/use-cases/__tests__/SendMessageUseCase.test.ts",
+        "changeType": "modified"
+      },
+      {
+        "layer": "application",
+        "componentType": "other",
+        "componentName": "",
+        "file": "packages/application/tsconfig.tsbuildinfo",
+        "changeType": "modified"
+      },
+      {
+        "layer": "domain",
+        "componentType": "entity",
+        "componentName": "Message",
+        "file": "packages/domain/src/entities/Message.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "domain",
+        "componentType": "test",
+        "componentName": "Message.test",
+        "file": "packages/domain/src/entities/__tests__/Message.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "domain",
+        "componentType": "valueObject",
+        "componentName": "Timestamp",
+        "file": "packages/domain/src/value-objects/Timestamp.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "domain",
+        "componentType": "test",
+        "componentName": "Timestamp.test",
+        "file": "packages/domain/src/value-objects/__tests__/Timestamp.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "domain",
+        "componentType": "other",
+        "componentName": "",
+        "file": "packages/domain/tsconfig.tsbuildinfo",
+        "changeType": "modified"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "graph.integration.test",
+        "file": "packages/infrastructure/src/agent/__tests__/graph.integration.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "integration.generateMockup.test",
+        "file": "packages/infrastructure/src/agent/__tests__/integration.generateMockup.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "sse.mockup.test",
+        "file": "packages/infrastructure/src/agent/__tests__/sse.mockup.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "intentClassificationNode.test",
+        "file": "packages/infrastructure/src/agent/nodes/__tests__/intentClassificationNode.test.ts",
+        "changeType": "modified"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "MockupGeneratorService.test",
+        "file": "packages/infrastructure/src/ai/__tests__/MockupGeneratorService.test.ts",
+        "changeType": "modified"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "other",
+        "componentName": "",
+        "file": "packages/infrastructure/tsconfig.tsbuildinfo",
+        "changeType": "modified"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "other",
+        "componentName": "",
+        "file": "packages/infrastructure/vitest.config.ts",
+        "changeType": "added"
+      }
+    ],
+    "summary": {
+      "totalFiles": 109,
+      "additions": 19373,
+      "deletions": 234,
+      "domainChanges": 5,
+      "applicationChanges": 3,
+      "infrastructureChanges": 7,
+      "testChanges": 10
+    }
+  },
+  "dddComponents": {
+    "domain": {
+      "entities": [
+        {
+          "layer": "domain",
+          "componentType": "entity",
+          "componentName": "Message",
+          "file": "packages/domain/src/entities/Message.ts",
+          "changeType": "added"
+        }
+      ],
+      "valueObjects": [
+        {
+          "layer": "domain",
+          "componentType": "valueObject",
+          "componentName": "Timestamp",
+          "file": "packages/domain/src/value-objects/Timestamp.ts",
+          "changeType": "added"
+        }
+      ],
+      "services": []
+    },
+    "application": {
+      "useCases": [],
+      "dtos": []
+    },
+    "infrastructure": {
+      "repositories": [],
+      "services": []
+    },
+    "tests": [
+      {
+        "layer": "api",
+        "componentType": "test",
+        "componentName": "health.test",
+        "file": "apps/api/src/routes/__tests__/health.test.ts",
+        "changeType": "modified"
+      },
+      {
+        "layer": "application",
+        "componentType": "test",
+        "componentName": "LoadChatHistoryUseCase.test",
+        "file": "packages/application/src/use-cases/__tests__/LoadChatHistoryUseCase.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "application",
+        "componentType": "test",
+        "componentName": "SendMessageUseCase.test",
+        "file": "packages/application/src/use-cases/__tests__/SendMessageUseCase.test.ts",
+        "changeType": "modified"
+      },
+      {
+        "layer": "domain",
+        "componentType": "test",
+        "componentName": "Message.test",
+        "file": "packages/domain/src/entities/__tests__/Message.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "domain",
+        "componentType": "test",
+        "componentName": "Timestamp.test",
+        "file": "packages/domain/src/value-objects/__tests__/Timestamp.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "graph.integration.test",
+        "file": "packages/infrastructure/src/agent/__tests__/graph.integration.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "integration.generateMockup.test",
+        "file": "packages/infrastructure/src/agent/__tests__/integration.generateMockup.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "sse.mockup.test",
+        "file": "packages/infrastructure/src/agent/__tests__/sse.mockup.test.ts",
+        "changeType": "added"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "intentClassificationNode.test",
+        "file": "packages/infrastructure/src/agent/nodes/__tests__/intentClassificationNode.test.ts",
+        "changeType": "modified"
+      },
+      {
+        "layer": "infrastructure",
+        "componentType": "test",
+        "componentName": "MockupGeneratorService.test",
+        "file": "packages/infrastructure/src/ai/__tests__/MockupGeneratorService.test.ts",
+        "changeType": "modified"
+      }
+    ]
+  }
+}
