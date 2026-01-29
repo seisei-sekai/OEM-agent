@@ -6,7 +6,7 @@ import {
   CreateSessionDTOSchema,
   LoadChatHistoryDTOSchema,
 } from '@repo/application';
-import { IChatSessionRepository } from '@repo/domain';
+import { IChatSessionRepository, ChatSession } from '@repo/domain';
 
 const sessionsRoute = new Hono();
 
@@ -45,7 +45,7 @@ sessionsRoute.get('/', async (c) => {
     const sessions = await useCase.execute(dto);
 
     return c.json({
-      sessions: sessions.map(s => s.toJSON()),
+      sessions: sessions.map((s: ChatSession) => s.toJSON()),
     });
   } catch (error) {
     return c.json({

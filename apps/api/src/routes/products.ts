@@ -4,7 +4,7 @@ import {
   IRecommendProductsUseCase,
   RecommendProductsDTOSchema,
 } from '@repo/application';
-import { IProductCatalogRepository } from '@repo/domain';
+import { IProductCatalogRepository, Product } from '@repo/domain';
 
 const productsRoute = new Hono();
 
@@ -18,7 +18,7 @@ productsRoute.post('/recommend', async (c) => {
     const products = await useCase.execute(dto);
 
     return c.json({
-      products: products.map(p => p.toJSON()),
+      products: products.map((p: Product) => p.toJSON()),
       total: products.length,
     });
   } catch (error) {
@@ -62,7 +62,7 @@ productsRoute.get('/search', async (c) => {
     const products = await repo.search(query, { category: category as any }, limit);
 
     return c.json({
-      products: products.map(p => p.toJSON()),
+      products: products.map((p: Product) => p.toJSON()),
       total: products.length,
     });
   } catch (error) {
