@@ -1,7 +1,7 @@
-export { DomainEvent, BaseDomainEvent } from './DomainEvent.js';
-export { SessionStarted } from './SessionStarted.js';
-export { MessageSent } from './MessageSent.js';
-export { BrandingExtracted } from './BrandingExtracted.js';
-export { ProductsRecommended } from './ProductsRecommended.js';
+export { DomainEvent, BaseDomainEvent } from './DomainEvent';
+export { SessionStarted } from './SessionStarted';
+export { MessageSent } from './MessageSent';
+export { BrandingExtracted } from './BrandingExtracted';
+export { ProductsRecommended } from './ProductsRecommended';
 
 

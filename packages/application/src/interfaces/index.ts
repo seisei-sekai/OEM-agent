@@ -3,16 +3,16 @@ export {
   type AgentMessage,
   type AgentStreamEvent,
   type AgentContext,
-} from './IAgentService.js';
+} from './IAgentService';
 export {
   IBrandingExtractor,
   type BrandingExtractionResult,
-} from './IBrandingExtractor.js';
+} from './IBrandingExtractor';
 export {
   IMockupGenerator,
   type MockupGenerationOptions,
   type MockupResult,
-} from './IMockupGenerator.js';
-export { IVectorSearch } from './IVectorSearch.js';
+} from './IMockupGenerator';
+export { IVectorSearch } from './IVectorSearch';
 
 

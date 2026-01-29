@@ -5,19 +5,19 @@ export {
   type SendMessageDTO,
   type CreateSessionDTO,
   type LoadChatHistoryDTO,
-} from './ChatDTO.js';
+} from './ChatDTO';
 export {
   ExtractBrandingFromUrlDTOSchema,
   ExtractBrandingFromFileDTOSchema,
   type ExtractBrandingFromUrlDTO,
   type ExtractBrandingFromFileDTO,
-} from './BrandingDTO.js';
+} from './BrandingDTO';
 export {
   RecommendProductsDTOSchema,
   GenerateMockupDTOSchema,
   type RecommendProductsDTO,
   type GenerateMockupDTO,
-} from './ProductDTO.js';
+} from './ProductDTO';
 
 
 

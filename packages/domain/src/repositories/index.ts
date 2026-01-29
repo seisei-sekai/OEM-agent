@@ -1,9 +1,9 @@
-export { IChatSessionRepository } from './IChatSessionRepository.js';
+export { IChatSessionRepository } from './IChatSessionRepository';
 export {
   IProductCatalogRepository,
   type ProductFilters,
-} from './IProductCatalogRepository.js';
-export { IBrandingRepository } from './IBrandingRepository.js';
+} from './IProductCatalogRepository';
+export { IBrandingRepository } from './IBrandingRepository';
 
 
 

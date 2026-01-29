@@ -1,27 +1,27 @@
 export {
   IStartChatSessionUseCase,
   StartChatSessionUseCase,
-} from './StartChatSessionUseCase.js';
+} from './StartChatSessionUseCase';
 export {
   ISendMessageUseCase,
   SendMessageUseCase,
-} from './SendMessageUseCase.js';
+} from './SendMessageUseCase';
 export {
   ILoadChatHistoryUseCase,
   LoadChatHistoryUseCase,
-} from './LoadChatHistoryUseCase.js';
+} from './LoadChatHistoryUseCase';
 export {
   IExtractBrandingUseCase,
   ExtractBrandingUseCase,
-} from './ExtractBrandingUseCase.js';
+} from './ExtractBrandingUseCase';
 export {
   IRecommendProductsUseCase,
   RecommendProductsUseCase,
-} from './RecommendProductsUseCase.js';
+} from './RecommendProductsUseCase';
 export {
   IGenerateMockupUseCase,
   GenerateMockupUseCase,
-} from './GenerateMockupUseCase.js';
+} from './GenerateMockupUseCase';
 
 
 

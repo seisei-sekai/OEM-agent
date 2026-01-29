@@ -37,7 +37,7 @@ export class SendMessageUseCase implements ISendMessageUseCase {
 
     // Get previous messages for context
     const previousMessages = await this.sessionRepository.findMessagesBySessionId(dto.sessionId);
-    const messageHistory = previousMessages.map(m => ({
+    const messageHistory = previousMessages.map((m: Message) => ({
       role: m.getRole(),
       content: m.getContent(),
     }));

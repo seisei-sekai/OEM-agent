@@ -1,16 +1,16 @@
 // Repositories
-export { MongoChatSessionRepository } from './repositories/MongoChatSessionRepository.js';
-export { MongoProductCatalogRepository } from './repositories/MongoProductCatalogRepository.js';
-export { MongoBrandingRepository } from './repositories/MongoBrandingRepository.js';
+export { MongoChatSessionRepository } from './repositories/MongoChatSessionRepository';
+export { MongoProductCatalogRepository } from './repositories/MongoProductCatalogRepository';
+export { MongoBrandingRepository } from './repositories/MongoBrandingRepository';
 
 // AI Services
-export { OpenAIService } from './ai/OpenAIService.js';
-export { BrandingExtractorService } from './ai/BrandingExtractorService.js';
-export { MockupGeneratorService } from './ai/MockupGeneratorService.js';
+export { OpenAIService } from './ai/OpenAIService';
+export { BrandingExtractorService } from './ai/BrandingExtractorService';
+export { MockupGeneratorService } from './ai/MockupGeneratorService';
 
 // Agent Services
-export { LangGraphAgentService } from './agent/AgentService.js';
+export { LangGraphAgentService } from './agent/AgentService';
 
 // Database
-export { connectMongoDB, disconnectMongoDB, getDB } from './database/mongodb.js';
+export { connectMongoDB, disconnectMongoDB, getDB } from './database/mongodb';
 

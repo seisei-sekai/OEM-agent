@@ -1,9 +1,9 @@
-export { agentGraph, createAgentGraph } from './graph.js';
-export { LangGraphAgentService } from './AgentService.js';
-export { AgentState, AgentDependencies, StateTransition } from './types.js';
-export * from './nodes/index.js';
-export { routeInitial, routeByIntent, shouldEnd } from './routing.js';
-export { stateChannels } from './stateChannels.js';
+export { agentGraph, createAgentGraph } from './graph';
+export { LangGraphAgentService } from './AgentService';
+export { AgentState, AgentDependencies, StateTransition } from './types';
+export * from './nodes/index';
+export { routeInitial, routeByIntent, shouldEnd } from './routing';
+export { stateChannels } from './stateChannels';
 
 
 
