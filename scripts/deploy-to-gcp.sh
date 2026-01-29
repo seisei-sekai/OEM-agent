@@ -46,6 +46,19 @@ if [[ $PUSH_REPLY =~ ^[Yy]$ ]]; then
     echo -e "${GREEN}✅ Pushed to GitHub${NC}\n"
 fi
 
+# Ask which branch to deploy
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+echo ""
+read -p "$(echo -e ${YELLOW}Which branch do you want to deploy? [${CURRENT_BRANCH}]:${NC} )" DEPLOY_BRANCH
+echo ""
+
+# Use current branch if no input provided
+if [[ -z "$DEPLOY_BRANCH" ]]; then
+    DEPLOY_BRANCH="$CURRENT_BRANCH"
+fi
+
+echo -e "${GREEN}📌 Will deploy branch: $DEPLOY_BRANCH${NC}"
+
 # Ask about Docker cache rebuild (BEFORE SSH for better interactivity)
 echo ""
 read -p "$(echo -e ${YELLOW}Do you want to clean Docker cache and force rebuild? [y/N]:${NC} )" -n 1 -r REBUILD_REPLY
@@ -56,10 +69,6 @@ REBUILD_FLAG=""
 if [[ $REBUILD_REPLY =~ ^[Yy]$ ]]; then
     REBUILD_FLAG="--no-cache"
 fi
-
-# Get current branch to deploy
-DEPLOY_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-echo -e "${YELLOW}📌 Deploying branch: $DEPLOY_BRANCH${NC}"
 
 # Step 2: SSH to GCP instance and deploy
 echo -e "${GREEN}🔧 Connecting to GCP instance...${NC}"
