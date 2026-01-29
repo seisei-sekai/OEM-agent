@@ -203,13 +203,45 @@ function generatePRBody(data: any): string {
     if (fs.existsSync(comparisonPath)) {
       comparisonContent = fs.readFileSync(comparisonPath, 'utf-8');
       
-      // Replace relative paths with absolute paths from repo root
-      // ./before/xxx.svg -> docs/ddd-changes/[timestamp]/before/xxx.svg
-      // ./after/xxx.svg -> docs/ddd-changes/[timestamp]/after/xxx.svg
+      // Get repository URL and current branch for GitHub raw content URLs
+      let repoUrl = '';
+      let currentBranch = '';
+      try {
+        const remoteUrl = execSync('git remote get-url origin', { 
+          cwd: PROJECT_ROOT, 
+          encoding: 'utf-8' 
+        }).trim();
+        
+        currentBranch = execSync('git rev-parse --abbrev-ref HEAD', { 
+          cwd: PROJECT_ROOT, 
+          encoding: 'utf-8' 
+        }).trim();
+        
+        // Convert git URL to GitHub raw content URL
+        // https://github.com/user/repo.git -> https://raw.githubusercontent.com/user/repo
+        repoUrl = remoteUrl
+          .replace(/\.git$/, '')
+          .replace('github.com', 'raw.githubusercontent.com');
+      } catch (error) {
+        console.warn('   ⚠️  Could not determine repository URL for image links');
+      }
+      
+      // Replace relative paths with GitHub raw content URLs
+      // ./before/xxx.svg -> https://raw.githubusercontent.com/user/repo/branch/docs/ddd-changes/[timestamp]/before/xxx.svg
       const relativePath = `docs/ddd-changes/${diffDirName}`;
+      
+      if (repoUrl && currentBranch) {
+        const baseUrl = `${repoUrl}/${currentBranch}/${relativePath}`;
+        comparisonContent = comparisonContent
+          .replace(/\.\/(before|after)\//g, `${baseUrl}/$1/`);
+      } else {
+        // Fallback to relative paths if git info not available
+        comparisonContent = comparisonContent
+          .replace(/\.\/(before|after)\//g, `${relativePath}/$1/`);
+      }
+      
+      // Remove the title (first line) since we'll add our own
       comparisonContent = comparisonContent
-        .replace(/\.\/(before|after)\//g, `${relativePath}/$1/`)
-        // Remove the title (first line) since we'll add our own
         .replace(/^# DDD Changes.*\n\n/, '')
         // Adjust headings (## -> ###) to fit within PR structure
         .replace(/^## /gm, '### ')
