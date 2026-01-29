@@ -30,13 +30,13 @@ COPY . .
 # Install all dependencies (creates proper workspace symlinks)
 RUN pnpm install --frozen-lockfile
 
-# Debug: Check workspace symlinks
-RUN echo "=== Checking node_modules/@repo/domain ===" && \
-    ls -la node_modules/@repo/ && \
-    echo "=== Checking if domain dist exists ===" && \
-    ls -la packages/domain/dist/ || echo "Domain dist not found!" && \
-    echo "=== Checking domain package.json ===" && \
-    cat packages/domain/package.json | grep -A 3 '"main"'
+# Debug: Check workspace symlinks in the RIGHT place
+RUN echo "=== Checking packages/application/node_modules/@repo/ ===" && \
+    ls -la packages/application/node_modules/@repo/ 2>/dev/null || echo "@repo not found in application!" && \
+    echo "=== Checking if domain link target exists ===" && \
+    ls -la packages/domain/src/ | head -5 && \
+    echo "=== Checking pnpm workspace config ===" && \
+    cat pnpm-workspace.yaml
 
 # Build all packages using turbo (handles dependency order automatically)
 RUN pnpm exec turbo build --filter @repo/api...
