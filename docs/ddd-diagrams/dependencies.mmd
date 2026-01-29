@@ -1,0 +1,315 @@
+flowchart LR
+
+subgraph 0["apps"]
+subgraph 1["api"]
+subgraph 2["src"]
+subgraph 3["di"]
+4["container.ts"]
+end
+5["index.ts"]
+subgraph 6["middleware"]
+7["cors.ts"]
+8["errorHandler.ts"]
+9["logger.ts"]
+end
+subgraph A["routes"]
+B["agent.ts"]
+C["branding.ts"]
+D["health.ts"]
+E["products.ts"]
+F["sessions.ts"]
+end
+end
+end
+subgraph G["web"]
+subgraph H["app"]
+I["layout.tsx"]
+J["globals.css"]
+K["page.tsx"]
+end
+subgraph L["components"]
+subgraph M["floating-agent"]
+N["BrandingInfoCard.tsx"]
+O["ChatInput.tsx"]
+P["ComingSoonTooltip.tsx"]
+Q["ChatModal.tsx"]
+R["ChatSidebar.tsx"]
+S["DebugPanel.tsx"]
+T["MessageList.tsx"]
+U["ProductMockupCard.tsx"]
+V["TransitionCard.tsx"]
+W["QuickActionButtons.tsx"]
+X["FloatingAIAgent.tsx"]
+Y["FloatingButton.tsx"]
+end
+end
+subgraph Z["lib"]
+10["api-client.ts"]
+11["store.ts"]
+12["uuid.ts"]
+end
+13["next-env.d.ts"]
+end
+end
+subgraph 14["packages"]
+subgraph 15["application"]
+subgraph 16["src"]
+subgraph 17["dtos"]
+18["BrandingDTO.ts"]
+19["ChatDTO.ts"]
+1A["ProductDTO.ts"]
+1B["index.ts"]
+end
+1C["index.ts"]
+subgraph 1D["interfaces"]
+1E["index.ts"]
+1F["IAgentService.ts"]
+1G["IBrandingExtractor.ts"]
+1H["IMockupGenerator.ts"]
+1I["IVectorSearch.ts"]
+end
+subgraph 1J["use-cases"]
+1K["index.ts"]
+1L["ExtractBrandingUseCase.ts"]
+1M["GenerateMockupUseCase.ts"]
+1N["LoadChatHistoryUseCase.ts"]
+1O["RecommendProductsUseCase.ts"]
+1P["SendMessageUseCase.ts"]
+1Q["StartChatSessionUseCase.ts"]
+end
+end
+end
+subgraph 1R["domain"]
+subgraph 1S["src"]
+subgraph 1T["entities"]
+1U["BrandingInfo.ts"]
+1Y["ChatSession.ts"]
+20["Message.ts"]
+21["Product.ts"]
+24["index.ts"]
+end
+subgraph 1V["value-objects"]
+1W["ColorCode.ts"]
+1X["LogoImage.ts"]
+1Z["SessionId.ts"]
+22["Price.ts"]
+23["ProductCategory.ts"]
+2L["index.ts"]
+end
+subgraph 25["events"]
+26["BrandingExtracted.ts"]
+27["DomainEvent.ts"]
+28["MessageSent.ts"]
+29["ProductsRecommended.ts"]
+2A["SessionStarted.ts"]
+2B["index.ts"]
+end
+2C["index.ts"]
+subgraph 2D["repositories"]
+2E["index.ts"]
+2F["IBrandingRepository.ts"]
+2G["IChatSessionRepository.ts"]
+2H["IProductCatalogRepository.ts"]
+end
+subgraph 2I["services"]
+2J["index.ts"]
+2K["CostCalculator.ts"]
+end
+end
+end
+subgraph 2M["infrastructure"]
+subgraph 2N["src"]
+subgraph 2O["agent"]
+2P["AgentService.ts"]
+2Q["graph.ts"]
+subgraph 2R["nodes"]
+2S["index.ts"]
+2T["brandingExtractionNode.ts"]
+2X["conversationNode.ts"]
+2Y["initialRouterNode.ts"]
+2Z["intentClassificationNode.ts"]
+30["mockupGenerationNode.ts"]
+31["productRecommendationNode.ts"]
+32["welcomeNode.ts"]
+end
+2U["types.ts"]
+subgraph 2V["utils"]
+2W["timeout.ts"]
+end
+33["routing.ts"]
+34["stateChannels.ts"]
+35["index.ts"]
+end
+subgraph 36["ai"]
+37["BrandingExtractorService.ts"]
+38["OpenAIService.ts"]
+39["MockupGeneratorService.ts"]
+3A["index.ts"]
+end
+subgraph 3B["database"]
+3C["mongodb.ts"]
+end
+3D["index.ts"]
+subgraph 3E["repositories"]
+3F["MongoBrandingRepository.ts"]
+3G["MongoChatSessionRepository.ts"]
+3H["MongoProductCatalogRepository.ts"]
+3I["index.ts"]
+end
+subgraph 3J["scripts"]
+3K["seed-simple.ts"]
+3L["seed.ts"]
+end
+subgraph 3M["vector"]
+3N["WeaviateProductSearch.ts"]
+3O["index.ts"]
+end
+end
+end
+end
+5-->7
+5-->8
+5-->9
+5-->B
+5-->C
+5-->D
+5-->E
+5-->F
+B-->4
+C-->4
+E-->4
+F-->4
+I-->J
+O-->P
+Q-->O
+Q-->R
+Q-->P
+Q-->S
+Q-->T
+Q-->W
+T-->N
+T-->P
+T-->U
+T-->V
+X-->Q
+X-->Y
+11-->10
+1B-->18
+1B-->19
+1B-->1A
+1C-->1B
+1C-->1E
+1C-->1K
+1E-->1F
+1E-->1G
+1E-->1H
+1E-->1I
+1K-->1L
+1K-->1M
+1K-->1N
+1K-->1O
+1K-->1P
+1K-->1Q
+1L-->18
+1L-->1G
+1M-->1A
+1M-->1H
+1N-->19
+1O-->1A
+1O-->1I
+1P-->19
+1P-->1F
+1Q-->19
+1U-->1W
+1U-->1X
+1Y-->1Z
+21-->22
+21-->23
+24-->1U
+24-->1Y
+24-->20
+24-->21
+26-->27
+28-->20
+28-->27
+29-->27
+2A-->27
+2B-->26
+2B-->27
+2B-->28
+2B-->29
+2B-->2A
+2C-->24
+2C-->2B
+2C-->2E
+2C-->2J
+2C-->2L
+2E-->2F
+2E-->2G
+2E-->2H
+2F-->1U
+2G-->1Y
+2G-->20
+2H-->21
+2H-->23
+2J-->2K
+2K-->22
+2L-->1W
+2L-->1X
+2L-->22
+2L-->23
+2L-->1Z
+2P-->2Q
+2P-->2U
+2Q-->2S
+2Q-->33
+2Q-->34
+2Q-->2U
+2S-->2T
+2S-->2X
+2S-->2Y
+2S-->2Z
+2S-->30
+2S-->31
+2S-->32
+2T-->2U
+2T-->2W
+2X-->2U
+2X-->2W
+2Y-->2U
+2Z-->2U
+2Z-->2W
+30-->2U
+30-->2W
+31-->2U
+31-->2W
+32-->2U
+33-->2U
+34-->2U
+35-->2P
+35-->2Q
+35-->2S
+35-->33
+35-->34
+35-->2U
+37-->38
+39-->38
+3A-->37
+3A-->39
+3A-->38
+3D-->2P
+3D-->37
+3D-->39
+3D-->38
+3D-->3C
+3D-->3F
+3D-->3G
+3D-->3H
+3F-->3C
+3G-->3C
+3H-->3C
+3I-->3F
+3I-->3G
+3I-->3H
+3L-->3C
+3O-->3N

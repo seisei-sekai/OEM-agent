@@ -79,6 +79,27 @@ export class Message {
     return this.role === 'agent';
   }
 
+  /**
+   * Get formatted timestamp
+   * Examples: "2:30 PM", "Yesterday at 3:45 PM"
+   */
+  getFormattedTimestamp(): string {
+    // Import inline to avoid circular dependencies
+    const { Timestamp } = require('../value-objects/Timestamp');
+    const ts = new Timestamp(this.timestamp);
+    return ts.format();
+  }
+
+  /**
+   * Get relative timestamp
+   * Examples: "5 minutes ago", "2 hours ago"
+   */
+  getRelativeTime(): string {
+    const { Timestamp } = require('../value-objects/Timestamp');
+    const ts = new Timestamp(this.timestamp);
+    return ts.toRelative();
+  }
+
   toJSON(): MessageData {
     return {
       id: this.id,

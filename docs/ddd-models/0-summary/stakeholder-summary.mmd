@@ -1,0 +1,42 @@
+graph TB
+    subgraph Context["System Context"]
+        BC["OEM Agent Context<br/>Single Bounded Context"]
+    end
+    
+    subgraph Subdomains["Sub-domains"]
+        Conv["Conversation Management<br/>2 entities"]
+        Prod["Product Catalog<br/>1 entities"]
+        Brand["Branding Extraction<br/>1 entities"]
+        Cost["Cost Calculation<br/>1 services"]
+    end
+    
+    subgraph Aggregates["Key Aggregates"]
+        AG1["BrandingInfo<br/>0 properties<br/>11 methods"]
+        AG2["ChatSession<br/>0 properties<br/>11 methods"]
+        AG3["Message<br/>0 properties<br/>11 methods"]
+    end
+    
+    subgraph UseCases["Core Use Cases"]
+        UC1["6 Use Cases"]
+        UC2["Complete User Journey"]
+    end
+    
+    subgraph Events["Domain Events"]
+        EV1["5 Events"]
+        EV2["Event Sourcing Support"]
+    end
+    
+    BC --> Conv
+    BC --> Prod
+    BC --> Brand
+    BC --> Cost
+    
+    Conv --> AG1
+    Conv --> AG2
+    Conv --> AG3
+    
+    style Context fill:#e1f5ff
+    style Subdomains fill:#fff4e6
+    style Aggregates fill:#ffcccc
+    style UseCases fill:#ccffcc
+    style Events fill:#ffe6cc

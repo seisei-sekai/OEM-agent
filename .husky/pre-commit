@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run DDD snapshot generation
+echo "📸 Generating DDD snapshot..."
+pnpm ddd:snapshot
+
+# Run lint-staged
+pnpm lint-staged

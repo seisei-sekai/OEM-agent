@@ -13,10 +13,39 @@
     "test": "turbo run test",
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "type-check": "turbo run type-check"
+    "type-check": "turbo run type-check",
+    "ddd:validate": "depcruise packages apps --config .dependency-cruiser.cjs",
+    "ddd:graph": "depcruise packages apps --include-only '^(packages|apps)' --config .dependency-cruiser.cjs --output-type dot | dot -T svg > docs/ddd-diagrams/dependencies.svg",
+    "ddd:archi": "depcruise packages apps --include-only '^(packages|apps)' --config .dependency-cruiser.cjs --output-type archi | dot -T svg > docs/ddd-diagrams/architecture.svg",
+    "ddd:report": "depcruise packages apps --include-only '^(packages|apps)' --config .dependency-cruiser.cjs --output-type html > docs/ddd-diagrams/report.html",
+    "ddd:mermaid": "depcruise packages apps --include-only '^(packages|apps)' --config .dependency-cruiser.cjs --output-type mermaid > docs/ddd-diagrams/dependencies.mmd",
+    "ddd:all": "pnpm ddd:validate && pnpm ddd:graph && pnpm ddd:archi && pnpm ddd:report && pnpm ddd:mermaid",
+    "ddd:generate": "tsx scripts/generate-ddd-docs.ts",
+    "ddd:convert": "tsx scripts/convert-to-svg.ts",
+    "ddd:docs": "pnpm ddd:generate && pnpm ddd:convert",
+    "ddd:watch": "nodemon --watch packages --watch Business --ext ts,md --exec 'pnpm ddd:docs'",
+    "ddd:snapshot": "tsx scripts/git-hooks/pre-commit-ddd-snapshot.ts",
+    "ddd:diff": "tsx scripts/generators/generate-ddd-diff.ts",
+    "workflow:new-feature": "tsx scripts/workflows/run-tdd-workflow.ts",
+    "workflow:generate-design": "tsx scripts/workflows/generate-design.ts",
+    "workflow:generate-tests": "tsx scripts/workflows/generate-tests.ts",
+    "workflow:generate-stubs": "tsx scripts/workflows/generate-code-stubs.ts",
+    "workflow:prepare-pr": "tsx scripts/workflows/prepare-pr.ts",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^11.12.0",
+    "@octokit/rest": "^22.0.1",
+    "cheerio": "^1.0.0-rc.12",
+    "dependency-cruiser": "^17.3.7",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "markdown-it": "^14.1.0",
+    "nodemon": "^3.1.11",
     "prettier": "^3.1.1",
+    "simple-git": "^3.30.0",
+    "ts-morph": "^27.0.2",
+    "tsx": "^4.7.0",
     "turbo": "^1.11.3",
     "typescript": "^5.3.3"
   },
@@ -26,6 +55,3 @@
     "pnpm": ">=8.0.0"
   }
 }
-
-
-

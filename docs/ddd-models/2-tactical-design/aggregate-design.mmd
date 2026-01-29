@@ -1,0 +1,64 @@
+classDiagram
+    
+    class BrandingInfo {
+        <<Aggregate Root>>
+        
+        +create()
+        +fromData()
+        +getId()
+        +getSessionId()
+        +getLogos()
+        +getPrimaryLogo()
+        +getColors()
+        +getPrimaryColor()
+        +getCompanyName()
+        +getWebsiteUrl()
+        +toJSON()
+    }
+    
+    
+    
+    
+        
+
+    class ChatSession {
+        <<Aggregate Root>>
+        
+        +create()
+        +fromData()
+        +getId()
+        +getUserId()
+        +getTitle()
+        +updateTitle()
+        +incrementMessageCount()
+        +getMessageCount()
+        +getContext()
+        +updateContext()
+        +toJSON()
+    }
+    
+    
+    
+    
+        
+
+    class Message {
+        <<Aggregate Root>>
+        
+        +create()
+        +fromData()
+        +getId()
+        +getSessionId()
+        +getRole()
+        +getContent()
+        +getTimestamp()
+        +getMetadata()
+        +isUserMessage()
+        +isAgentMessage()
+        +toJSON()
+    }
+    
+    
+    
+    
+        

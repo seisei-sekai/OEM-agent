@@ -8,6 +8,52 @@ import { ProductMockupCard } from './ProductMockupCard';
 import { TransitionCard } from './TransitionCard';
 import { ComingSoonTooltip } from './ComingSoonTooltip';
 import { apiClient } from '@/lib/api-client';
+import { MessageBubble } from '@/components/chat/MessageBubble';
+
+/**
+ * Format timestamp for new messages
+ */
+function formatTimestamp(date: Date): string {
+  const now = new Date();
+  const diff = now.getTime() - date.getTime();
+  const daysDiff = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  const formatTime = (d: Date) => {
+    return d.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+  };
+
+  const isSameDay = (d1: Date, d2: Date) => {
+    return (
+      d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate()
+    );
+  };
+
+  // Same day - just show time
+  if (isSameDay(date, now)) {
+    return formatTime(date);
+  }
+
+  // Yesterday
+  if (daysDiff === 1) {
+    return `Yesterday at ${formatTime(date)}`;
+  }
+
+  // This week
+  if (daysDiff < 7) {
+    const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+    return `${dayName} at ${formatTime(date)}`;
+  }
+
+  // Older - show date
+  const monthDay = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return `${monthDay} at ${formatTime(date)}`;
+}
 
 export function MessageList() {
   const { messages, isStreaming, currentSessionId, addMessage, updateMessage, updateMessageAction, updateMessageTransitions, setStreaming, setBrandingConfirmed } = useAIAgentStore();
@@ -16,11 +62,14 @@ export function MessageList() {
   const handleBrandingConfirm = async () => {
     if (!currentSessionId) return;
 
+    const timestamp = new Date();
     const confirmMessage = {
       id: generateUUID(),
       role: 'user' as const,
       content: '[Confirmed branding] → Show products',
-      timestamp: new Date(),
+      timestamp,
+      formattedTimestamp: formatTimestamp(timestamp),
+      relativeTimestamp: 'just now',
     };
     addMessage(confirmMessage);
     setBrandingConfirmed(true);
@@ -30,11 +79,14 @@ export function MessageList() {
       const agentMessageId = generateUUID();
       let agentResponse = '';
 
+      const agentTimestamp = new Date();
       addMessage({
         id: agentMessageId,
         role: 'agent',
         content: '',
-        timestamp: new Date(),
+        timestamp: agentTimestamp,
+        formattedTimestamp: formatTimestamp(agentTimestamp),
+        relativeTimestamp: 'just now',
       });
 
       // CRITICAL: Use selectedTransition to directly route to recommendProducts
@@ -55,11 +107,14 @@ export function MessageList() {
       }
     } catch (error) {
       console.error('Error sending confirmation:', error);
+      const errorTimestamp = new Date();
       addMessage({
         id: generateUUID(),
         role: 'agent',
         content: 'Sorry, I encountered an error. Please try again.',
-        timestamp: new Date(),
+        timestamp: errorTimestamp,
+        formattedTimestamp: formatTimestamp(errorTimestamp),
+        relativeTimestamp: 'just now',
       });
     } finally {
       setStreaming(false);
@@ -69,11 +124,14 @@ export function MessageList() {
   const handleTransitionSelect = async (transitionId: string) => {
     if (!currentSessionId || isStreaming) return;
 
+    const timestamp = new Date();
     const transitionMessage = {
       id: generateUUID(),
       role: 'user' as const,
       content: `[Transition: ${transitionId}]`,
-      timestamp: new Date(),
+      timestamp,
+      formattedTimestamp: formatTimestamp(timestamp),
+      relativeTimestamp: 'just now',
     };
     addMessage(transitionMessage);
     setStreaming(true);
@@ -82,11 +140,14 @@ export function MessageList() {
       const agentMessageId = generateUUID();
       let agentResponse = '';
 
+      const agentTimestamp = new Date();
       addMessage({
         id: agentMessageId,
         role: 'agent',
         content: '',
-        timestamp: new Date(),
+        timestamp: agentTimestamp,
+        formattedTimestamp: formatTimestamp(agentTimestamp),
+        relativeTimestamp: 'just now',
       });
 
       for await (const event of apiClient.sendMessage(currentSessionId, transitionMessage.content, { selectedTransition: transitionId })) {
@@ -103,11 +164,14 @@ export function MessageList() {
       }
     } catch (error) {
       console.error('Error sending transition:', error);
+      const errorTimestamp = new Date();
       addMessage({
         id: generateUUID(),
         role: 'agent',
         content: 'Sorry, I encountered an error. Please try again.',
-        timestamp: new Date(),
+        timestamp: errorTimestamp,
+        formattedTimestamp: formatTimestamp(errorTimestamp),
+        relativeTimestamp: 'just now',
       });
     } finally {
       setStreaming(false);
@@ -117,11 +181,14 @@ export function MessageList() {
   const handleUploadDifferent = async () => {
     if (!currentSessionId) return;
 
+    const timestamp = new Date();
     const uploadMessage = {
       id: generateUUID(),
       role: 'user' as const,
       content: 'I want to upload a different logo',
-      timestamp: new Date(),
+      timestamp,
+      formattedTimestamp: formatTimestamp(timestamp),
+      relativeTimestamp: 'just now',
     };
     addMessage(uploadMessage);
     setBrandingConfirmed(false);
@@ -131,11 +198,14 @@ export function MessageList() {
       const agentMessageId = generateUUID();
       let agentResponse = '';
 
+      const agentTimestamp = new Date();
       addMessage({
         id: agentMessageId,
         role: 'agent',
         content: '',
-        timestamp: new Date(),
+        timestamp: agentTimestamp,
+        formattedTimestamp: formatTimestamp(agentTimestamp),
+        relativeTimestamp: 'just now',
       });
 
       for await (const event of apiClient.sendMessage(currentSessionId, uploadMessage.content)) {
@@ -152,11 +222,14 @@ export function MessageList() {
       }
     } catch (error) {
       console.error('Error sending upload request:', error);
+      const errorTimestamp = new Date();
       addMessage({
         id: generateUUID(),
         role: 'agent',
         content: 'Sorry, I encountered an error. Please try again.',
-        timestamp: new Date(),
+        timestamp: errorTimestamp,
+        formattedTimestamp: formatTimestamp(errorTimestamp),
+        relativeTimestamp: 'just now',
       });
     } finally {
       setStreaming(false);
@@ -200,9 +273,16 @@ export function MessageList() {
       {messages.map((message) => (
         <div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
           <div className="flex flex-col max-w-full">
-            <div className={message.role === 'user' ? 'message-user' : 'message-agent'}>
-              {message.content}
-            </div>
+            {/* Use MessageBubble component with timestamps */}
+            <MessageBubble
+              content={message.content}
+              role={message.role === 'agent' ? 'assistant' : 'user'}
+              timestamp={message.timestamp.toISOString()}
+              formattedTimestamp={message.formattedTimestamp}
+              relativeTimestamp={message.relativeTimestamp}
+            />
+            
+            {/* Action cards below message */}
             {message.role === 'agent' && message.actionData?.type === 'show_branding' && (
               <BrandingInfoCard
                 branding={message.actionData.payload}

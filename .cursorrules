@@ -228,3 +228,107 @@ RUN pnpm build
 - Monitor and tune query performance with profiling tools
 - Store sensitive data encrypted at rest and in transit
 
+## Feature Development Workflow (Scrum + TDD + DDD)
+
+**Use automated workflow for all new features.**
+
+### Quick Start
+
+```bash
+# 1. Start new feature
+pnpm workflow:new-feature feature-name
+
+# 2. Fill requirement: Business/Features/feature-name/requirement.md
+# 3. Generate design
+pnpm workflow:generate-design feature-name
+
+# 4. Generate tests (TDD Red phase)
+pnpm workflow:generate-tests feature-name
+
+# 5. Generate code stubs
+pnpm workflow:generate-stubs feature-name
+
+# 6. Implement code (TDD Green phase)
+# Make tests pass
+
+# 7. Prepare PR (auto-generates DDD diff)
+pnpm workflow:prepare-pr
+```
+
+### Workflow Rules
+
+**Requirements:**
+- Document in `Business/Features/{name}/requirement.md`
+- Use provided Scrum template
+- Link to Notion for full context
+- Define all domain/application/infrastructure changes
+
+**Design:**
+- Auto-generated from requirements
+- Review and adjust as needed
+- Includes Mermaid diagrams
+
+**Testing (TDD):**
+- Tests generated BEFORE implementation
+- Run `pnpm test` - should fail (Red phase)
+- Implement code to make tests pass (Green phase)
+- Refactor while keeping tests green
+- Minimum 80% coverage required
+
+**Commits:**
+- Pre-commit hook auto-generates DDD snapshot
+- Snapshot stored in `docs/ddd-snapshots/{date}-{sha}/`
+- Includes all 9 DDD diagrams + metadata
+
+**Pull Requests:**
+- Use `pnpm workflow:prepare-pr` for automation
+- Auto-generates DDD diff diagrams (before/after)
+- Stored in `docs/ddd-changes/PR-{number}/`
+- PR template auto-populated with:
+  - Test results
+  - DDD impact analysis
+  - Review focus areas
+  - Side-by-side diagram comparisons
+
+### DDD Diagram Versioning
+
+**Per Commit:** Full DDD snapshot in `docs/ddd-snapshots/`
+**Per PR:** Side-by-side comparison in `docs/ddd-changes/`
+
+**View changes:**
+```bash
+# See all snapshots
+ls docs/ddd-snapshots/
+
+# View PR diff
+open docs/ddd-changes/PR-{number}/comparison.md
+```
+
+### Code Review Guidelines
+
+**Use DDD diff diagrams:**
+- Review architecture impact visually
+- Check layer separation maintained
+- Verify aggregate boundaries
+- Ensure domain events properly used
+
+**Focus areas (AI-identified):**
+- Critical business logic changes
+- Security-sensitive integrations
+- Performance implications
+- Breaking changes
+
+**Checklist:**
+- [ ] Domain logic in domain layer only
+- [ ] Use cases are thin orchestration
+- [ ] Tests written before implementation
+- [ ] Coverage >80%
+- [ ] DDD principles followed
+- [ ] No breaking changes to public APIs
+
+### Documentation
+
+- **Workflow Guide:** `docs/WORKFLOW_GUIDE.md`
+- **DDD Models:** `docs/ddd-models/README.md`
+- **Templates:** `templates/scrum/requirement-template.md`
+
