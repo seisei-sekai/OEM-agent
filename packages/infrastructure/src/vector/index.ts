@@ -1,4 +1,4 @@
-export { WeaviateProductSearch } from './WeaviateProductSearch';
+export { WeaviateProductSearch } from './WeaviateProductSearch.js';
 
 
 

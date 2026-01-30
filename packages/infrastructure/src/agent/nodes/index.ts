@@ -1,8 +1,8 @@
-export { initialRouterNode } from './initialRouterNode';
-export { welcomeNode } from './welcomeNode';
-export { intentClassificationNode } from './intentClassificationNode';
-export { brandingExtractionNode } from './brandingExtractionNode';
-export { productRecommendationNode } from './productRecommendationNode';
-export { conversationNode } from './conversationNode';
-export { mockupGenerationNode } from './mockupGenerationNode';
+export { initialRouterNode } from './initialRouterNode.js';
+export { welcomeNode } from './welcomeNode.js';
+export { intentClassificationNode } from './intentClassificationNode.js';
+export { brandingExtractionNode } from './brandingExtractionNode.js';
+export { productRecommendationNode } from './productRecommendationNode.js';
+export { conversationNode } from './conversationNode.js';
+export { mockupGenerationNode } from './mockupGenerationNode.js';
 

@@ -1,4 +1,4 @@
-export { MongoChatSessionRepository } from './MongoChatSessionRepository';
-export { MongoProductCatalogRepository } from './MongoProductCatalogRepository';
-export { MongoBrandingRepository } from './MongoBrandingRepository';
+export { MongoChatSessionRepository } from './MongoChatSessionRepository.js';
+export { MongoProductCatalogRepository } from './MongoProductCatalogRepository.js';
+export { MongoBrandingRepository } from './MongoBrandingRepository.js';
 

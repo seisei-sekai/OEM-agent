@@ -1,4 +1,4 @@
-export { OpenAIService } from './OpenAIService';
-export { BrandingExtractorService } from './BrandingExtractorService';
-export { MockupGeneratorService } from './MockupGeneratorService';
+export { OpenAIService } from './OpenAIService.js';
+export { BrandingExtractorService } from './BrandingExtractorService.js';
+export { MockupGeneratorService } from './MockupGeneratorService.js';
 
