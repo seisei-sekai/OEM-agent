@@ -3,15 +3,32 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js",
-    "./agent": "./dist/agent/index.js",
-    "./repositories": "./dist/repositories/index.js",
-    "./ai": "./dist/ai/index.js",
-    "./vector": "./dist/vector/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./agent": {
+      "types": "./dist/agent/index.d.ts",
+      "default": "./dist/agent/index.js"
+    },
+    "./repositories": {
+      "types": "./dist/repositories/index.d.ts",
+      "default": "./dist/repositories/index.js"
+    },
+    "./ai": {
+      "types": "./dist/ai/index.d.ts",
+      "default": "./dist/ai/index.js"
+    },
+    "./vector": {
+      "types": "./dist/vector/index.d.ts",
+      "default": "./dist/vector/index.js"
+    }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build",
     "clean": "rm -rf dist",
     "type-check": "tsc --noEmit",
     "seed": "tsx src/scripts/seed.ts",

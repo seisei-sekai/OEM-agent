@@ -24,29 +24,17 @@ RUN pnpm install --frozen-lockfile
 FROM base AS builder
 WORKDIR /app
 
-# Copy dependencies from deps stage
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules
-COPY --from=deps /app/packages/domain/node_modules ./packages/domain/node_modules
-COPY --from=deps /app/packages/application/node_modules ./packages/application/node_modules
-COPY --from=deps /app/packages/infrastructure/node_modules ./packages/infrastructure/node_modules
+# Copy all source code at once to avoid file conflicts
+COPY . .
 
-# Copy workspace files
-COPY pnpm-workspace.yaml package.json turbo.json tsconfig.json ./
+# Install all dependencies (creates proper workspace symlinks)
+RUN pnpm install --frozen-lockfile
 
-# Copy packages
-COPY packages/ ./packages/
+# Clean all tsbuildinfo to prevent stale cache issues
+RUN find . -name "*.tsbuildinfo" -delete
 
-# Copy API source
-COPY apps/api/ ./apps/api/
-
-# Build packages - FAIL FAST on errors!
-RUN pnpm --filter @repo/domain build
-RUN pnpm --filter @repo/application build
-RUN pnpm --filter @repo/infrastructure build
-
-# Build API - FAIL FAST on errors!
-RUN pnpm --filter @repo/api build
+# Build all packages using turbo (handles dependency order automatically)
+RUN pnpm exec turbo build --filter @repo/api...
 
 # Stage 3: Runner
 FROM base AS runner

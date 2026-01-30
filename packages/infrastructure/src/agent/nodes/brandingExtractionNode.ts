@@ -1,5 +1,6 @@
 import { AIMessage } from '@langchain/core/messages';
 import { RunnableConfig } from '@langchain/core/runnables';
+import { BrandingInfo } from '@repo/domain';
 import { AgentState, AgentDependencies, StateTransition } from '../types.js';
 import { withTimeout } from '../utils/timeout.js';
 
@@ -53,7 +54,7 @@ export async function brandingExtractionNode(
 
   try {
     // Wrap branding extraction with timeout
-    const branding = await withTimeout(
+    const branding: BrandingInfo = await withTimeout(
       dependencies.extractBrandingUseCase.executeFromUrl({
         url,
         sessionId: state.sessionId,

@@ -1,5 +1,6 @@
 import { AIMessage } from '@langchain/core/messages';
 import { RunnableConfig } from '@langchain/core/runnables';
+import { Product } from '@repo/domain';
 import { AgentState, AgentDependencies, StateTransition } from '../types.js';
 import { withTimeout, withRetry } from '../utils/timeout.js';
 
@@ -41,7 +42,7 @@ export async function productRecommendationNode(
     }
     
     // Use retry logic for product recommendations (database might be temporarily unavailable)
-    const products = await withRetry(
+    const products: Product[] = await withRetry(
       () => withTimeout(
         dependencies.recommendProductsUseCase.execute({
           sessionId: state.sessionId,

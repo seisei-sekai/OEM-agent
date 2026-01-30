@@ -203,6 +203,287 @@ RUN pnpm build
 - Use `--no-cache` flag when debugging compilation issues
 - Remove error suppression from Dockerfiles (`|| echo`, `|| true`, etc.)
 
+### TypeScript Build Cache (.tsbuildinfo) ⚠️ CRITICAL
+
+**NEVER commit `.tsbuildinfo` files to Git.**
+
+**Problem**: `.tsbuildinfo` files contain TypeScript incremental compilation cache. When committed to Git, these stale cache files can cause:
+- TypeScript compiler to skip recompiling files
+- Old import paths (e.g., with `.js` extensions) to persist
+- "Cannot find module" errors in Docker builds even after source code is fixed
+- Different behavior between local and Docker builds
+
+**Symptoms**:
+- Local build succeeds, Docker build fails with module resolution errors
+- TypeScript generates `.d.ts.map` but not `.d.ts` files
+- Changes to import statements not reflected in compilation
+- Build "succeeds" but produces no output files
+
+**Root Cause Example**:
+```typescript
+// Old code (committed in .tsbuildinfo cache):
+export * from './entities/index.js';  // ❌ TypeScript can't find this
+
+// New code (in source):
+export * from './entities/index';     // ✅ Correct
+```
+If `.tsbuildinfo` is committed with old state, TypeScript uses cached info and skips the file.
+
+**Solution**:
+```bash
+# 1. Add to .gitignore
+echo "*.tsbuildinfo" >> .gitignore
+
+# 2. Remove from Git tracking
+git rm --cached **/*.tsbuildinfo
+git commit -m "fix: remove TypeScript build cache from git"
+
+# 3. Clean in Dockerfile BEFORE build
+RUN find . -name "*.tsbuildinfo" -delete && pnpm build
+```
+
+**Required .gitignore entries**:
+```gitignore
+# TypeScript
+*.tsbuildinfo
+
+# Build outputs
+dist/
+build/
+.next/
+```
+
+**Debugging checklist**:
+1. Check if `.tsbuildinfo` exists: `find . -name "*.tsbuildinfo" | grep -v node_modules`
+2. Verify it's in `.gitignore`: `git check-ignore *.tsbuildinfo`
+3. Confirm not tracked: `git ls-files | grep tsbuildinfo` (should be empty)
+4. Clean locally: `find . -name "*.tsbuildinfo" -delete`
+5. Clean in Docker: Add delete step before build in Dockerfile
+
+**For composite projects (project references)**:
+- Use `tsc --build` instead of `tsc`
+- Ensure all package.json have `"build": "tsc --build"`
+- Composite projects REQUIRE `.tsbuildinfo` for incremental builds, but these must be generated per build, never committed
+
+## CORS Configuration for Cloud Deployment ⚠️ CRITICAL
+
+**NEVER hardcode localhost-only origins in CORS middleware.**
+
+**Problem**: CORS middleware configured only for `localhost:3000` blocks access from deployed instances using IP addresses or custom domains.
+
+**Symptoms**:
+- Browser console shows: "Access-Control-Allow-Origin header has a value 'http://localhost:3000' that is not equal to the supplied origin"
+- API calls fail with `net::ERR_FAILED`
+- Frontend deployed on cloud (e.g., GCP) cannot communicate with API
+
+**Root Cause Example**:
+```typescript
+// ❌ BAD - Only allows localhost
+export const corsMiddleware = cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+});
+
+// ❌ ALSO BAD - Hardcoded list without flexibility
+export const corsMiddleware = cors({
+  origin: (origin) => {
+    const allowed = ['http://localhost:3000'];
+    return allowed.includes(origin) ? origin : allowed[0];
+  },
+});
+```
+
+**Solution**:
+```typescript
+// ✅ GOOD - Flexible for development and production
+export const corsMiddleware = cors({
+  origin: (origin) => {
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      process.env.FRONTEND_URL || '',
+    ].filter(Boolean);
+
+    // Allow if origin is in whitelist
+    if (allowedOrigins.includes(origin)) {
+      return origin;
+    }
+    
+    // Allow if no origin (same-origin)
+    if (!origin) {
+      return origin;
+    }
+    
+    // For production: allow IP-based origins (e.g., http://34.84.2.46:3000)
+    // This handles direct IP access to deployed apps
+    if (origin.match(/^https?:\/\/\d+\.\d+\.\d+\.\d+:\d+$/)) {
+      return origin;
+    }
+    
+    // Fallback to first allowed origin
+    return allowedOrigins[0];
+  },
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+});
+```
+
+**Environment Variables**:
+```bash
+# Local .env
+FRONTEND_URL=http://localhost:3000
+
+# GCP .env
+FRONTEND_URL=http://34.84.2.46:3000
+# Or for custom domain
+FRONTEND_URL=https://yourdomain.com
+```
+
+**Testing CORS**:
+```bash
+# Test OPTIONS preflight
+curl -v -X OPTIONS "http://localhost:4000/api/endpoint" \
+  -H "Origin: http://34.84.2.46:3000" \
+  -H "Access-Control-Request-Method: GET"
+
+# Should return:
+# < access-control-allow-origin: http://34.84.2.46:3000
+```
+
+**Deployment Checklist**:
+1. Set `FRONTEND_URL` in production `.env`
+2. Verify CORS allows IP-based origins if needed
+3. Test with actual deployed frontend URL
+4. Check browser console for CORS errors
+5. Restart API container after `.env` changes
+
+**Security Notes**:
+- IP regex only matches IPv4 format (prevents arbitrary origins)
+- Always validate environment variables exist
+- Use HTTPS in production for both frontend and API
+- Consider adding rate limiting for public APIs
+
+## OpenAI API Key Configuration ⚠️ CRITICAL
+
+**NEVER commit API keys or use placeholder values in production.**
+
+**Problem**: Using placeholder API keys (`sk-placeholder`) or committing real keys to Git causes runtime failures or security breaches.
+
+**Symptoms**:
+- API returns: "Incorrect API key provided: sk-place**lder"
+- 401 Unauthorized errors from OpenAI API
+- Application works locally but fails in production
+- API key exposed in Git history
+
+**Root Cause**:
+1. **Placeholder values in production `.env`**: When deployment scripts create `.env`, they use dummy values
+2. **Committed keys in Git**: Real API keys committed to repository
+3. **Container not restarted**: After updating `.env`, old environment variables persist in running containers
+
+**Solution**:
+
+### 1. Never Commit API Keys
+```gitignore
+# .gitignore
+.env
+.env.local
+.env.production
+*.key
+credentials.json
+```
+
+### 2. Use Environment Variables Properly
+```typescript
+// ✅ GOOD - Fail fast if missing
+const openaiKey = process.env.OPENAI_API_KEY;
+if (!openaiKey || openaiKey === 'sk-placeholder') {
+  throw new Error('OPENAI_API_KEY must be set in environment');
+}
+
+// ✅ GOOD - Validate format
+if (!openaiKey.startsWith('sk-proj-') && !openaiKey.startsWith('sk-')) {
+  throw new Error('Invalid OPENAI_API_KEY format');
+}
+```
+
+### 3. Deployment Script Best Practices
+```bash
+# ❌ BAD - Creates .env with placeholder
+cat > .env << EOF
+OPENAI_API_KEY=sk-placeholder
+EOF
+
+# ✅ GOOD - Prompt for real key or copy from local
+if [ -f .env.local ]; then
+  echo "Copying API key from .env.local..."
+  grep "OPENAI_API_KEY" .env.local >> .env
+else
+  echo "ERROR: .env.local not found. Set OPENAI_API_KEY manually."
+  exit 1
+fi
+```
+
+### 4. GCP Deployment Workflow
+```bash
+# On local machine:
+# 1. Ensure .env has real key
+grep "OPENAI_API_KEY" .env | grep -v "placeholder" || echo "ERROR: Set real API key!"
+
+# 2. Deploy and update key on GCP
+gcloud compute ssh vm-name --command="
+cd /opt/app
+sudo sed -i 's/OPENAI_API_KEY=.*/OPENAI_API_KEY=sk-proj-REAL-KEY-HERE/' .env
+
+# CRITICAL: Restart containers to load new env
+sudo docker-compose down
+sudo docker-compose up -d
+"
+```
+
+### 5. Verification Checklist
+```bash
+# Check .env file (obfuscate output)
+grep "OPENAI_API_KEY" .env | cut -c1-50
+
+# Test API key works
+curl https://api.openai.com/v1/models \
+  -H "Authorization: Bearer $OPENAI_API_KEY" | jq '.data[0].id'
+
+# Verify container environment
+docker exec container-name env | grep OPENAI_API_KEY | cut -c1-50
+
+# Check application logs for API errors
+docker logs container-name 2>&1 | grep -i "api key\|401\|unauthorized"
+```
+
+**Container Restart Rules**:
+- **Always restart after `.env` changes**: `docker-compose restart service-name`
+- **Or full restart**: `docker-compose down && docker-compose up -d`
+- **Never assume**: Environment variables auto-reload (they don't!)
+
+**Security Best Practices**:
+1. Use separate keys for dev/staging/prod
+2. Rotate keys regularly (monthly recommended)
+3. Monitor API usage for anomalies
+4. Use `.env.example` with placeholder values for documentation
+5. Use secret management services (GCP Secret Manager, AWS Secrets Manager) for production
+
+**Emergency Response**:
+If API key is committed to Git:
+```bash
+# 1. Immediately revoke the key at OpenAI dashboard
+# 2. Generate new key
+# 3. Update all environments
+# 4. Remove from Git history (if recent)
+git filter-branch --force --index-filter \
+  "git rm --cached --ignore-unmatch .env" \
+  --prune-empty --tag-name-filter cat -- --all
+
+# 5. Force push (coordinate with team!)
+git push origin --force --all
+```
+
 ## Test-Driven Development (TDD) for AI Coding
 
 - Write tests BEFORE implementation (red-green-refactor)
