@@ -4,23 +4,23 @@ export {
   MessageRoleSchema,
   type MessageData,
   type MessageRole,
-} from './Message';
+} from './Message.js';
 export {
   ChatSession,
   ChatSessionSchema,
   type ChatSessionData,
-} from './ChatSession';
+} from './ChatSession.js';
 export {
   BrandingInfo,
   BrandingInfoSchema,
   type BrandingInfoData,
-} from './BrandingInfo';
+} from './BrandingInfo.js';
 export {
   Product,
   ProductSchema,
   ColorOptionSchema,
   type ProductData,
   type ColorOption,
-} from './Product';
+} from './Product.js';
 
 

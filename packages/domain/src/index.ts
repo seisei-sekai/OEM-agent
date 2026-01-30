@@ -1,15 +1,15 @@
 // Entities
-export * from './entities/index';
+export * from './entities/index.js';
 
 // Value Objects
-export * from './value-objects/index';
+export * from './value-objects/index.js';
 
 // Repositories
-export * from './repositories/index';
+export * from './repositories/index.js';
 
 // Services
-export * from './services/index';
+export * from './services/index.js';
 
 // Events
-export * from './events/index';
+export * from './events/index.js';
 

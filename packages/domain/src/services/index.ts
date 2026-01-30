@@ -1,4 +1,4 @@
-export { CostCalculator, type CostCalculationInput } from './CostCalculator';
+export { CostCalculator, type CostCalculationInput } from './CostCalculator.js';
 
 
 
